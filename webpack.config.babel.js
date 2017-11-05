@@ -14,34 +14,6 @@ const cfg = (
 
 // common configuration
 export default [
-    // server
-    {
-        entry: path.resolve('src/api/index.js'),
-        output: {
-            path: path.resolve('dist'),
-            filename: 'server.js'
-        },
-        target: 'node',
-        externals: [
-            nodeExternals()
-        ],
-        devServer: {
-            ...cfg.server.devServer
-        },
-        plugins: [
-            ...cfg.server.plugins
-        ],
-        module: {
-            rules: [
-                {
-                    test: /\.jsx?$/,
-                    use: 'babel-loader',
-                    exclude: /node_modules/
-                },
-                ...cfg.server.rules
-            ]
-        }
-    },
     // client
     {
         entry: path.resolve('src/www/app/index.js'),
@@ -69,6 +41,34 @@ export default [
                     exclude: /node_modules/
                 },
                 ...cfg.client.rules
+            ]
+        }
+    },
+    // server
+    {
+        entry: path.resolve('src/api/index.js'),
+        output: {
+            path: path.resolve('dist'),
+            filename: 'server.js'
+        },
+        target: 'node',
+        externals: [
+            nodeExternals()
+        ],
+        devServer: {
+            ...cfg.server.devServer
+        },
+        plugins: [
+            ...cfg.server.plugins
+        ],
+        module: {
+            rules: [
+                {
+                    test: /\.jsx?$/,
+                    use: 'babel-loader',
+                    exclude: /node_modules/
+                },
+                ...cfg.server.rules
             ]
         }
     }

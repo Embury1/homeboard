@@ -1,21 +1,13 @@
-import NodemonPlugin from 'nodemon-webpack-plugin';
 import path from 'path';
 
 export default {
     server: {
         devServer: {
             proxy: {
-                '/api': 'http://localhost:8081'
+				'/api': 'http://localhost:8081'
             }
         },
-        plugins: [
-            new NodemonPlugin({
-                script: path.resolve('dist/server.js'),
-                ignore: [
-                    path.resolve('dist/assets/**')
-                ]
-            })
-        ],
+        plugins: [ ],
         rules: [
             
         ]

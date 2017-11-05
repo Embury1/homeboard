@@ -1,23 +1,34 @@
+import http from 'http';
 import express from 'express';
+import devices from './devices/devices';
+import socketio from 'socket.io';
+import mongoose from 'mongoose';
+import log from './log';
+import dotenv from 'dotenv';
 
 const app = express();
+const server = http.createServer(app);
 const env = process.env.NODE_ENV || 'dev';
 const port = process.env.PORT || 8081;
 
-if (env === 'production') {
-    app.use(express.static('assets'));
-}
+const io = socketio(server, {path: '/ws'});
 
-app.get('/api/hello', (req, res) => {
-    res.send('Hello from api!');
+dotenv.config();
+
+mongoose.connect(process.env.DB_URL, (err) => {
+    if (err) return log.error(err);
+    log.info('Connected to database.');
 });
 
+devices(io);
+
 if (env === 'production') {
+    app.use(express.static('assets'));
     app.get('/', (req, res) => {
         res.sendFile('assets/index.html');
     });
 }
 
-app.listen(port, () => {
-    console.log(`Server listening at port ${port}`);
+server.listen(port, () => {
+    log.info(`Server listening at port ${port}`);
 });
