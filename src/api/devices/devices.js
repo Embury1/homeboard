@@ -16,6 +16,13 @@ export default function(io) {
 		});
 	    } else {
 		log.info(`Device is registered as ${id}.`);
+		const device = Device.findById(id, (err, device) => {
+		    if (err) return log.error(err);
+		    device.connected = new Date();
+		    device.save((err) => {
+			if (err) return log.error(err);
+		    });
+		});
 	    }
 	});
     });
