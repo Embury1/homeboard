@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 import ReactDOM, { render } from 'react-dom';
 import io from 'socket.io-client';
 import styles from '../css/main.css';
+import View from './widgets/view';
+
+// Received from api
+const refs = [
+    'admin/edit'
+];
 
 class App extends Component {
     constructor(props) {
@@ -18,11 +24,15 @@ class App extends Component {
 	    localStorage.setItem('deviceId', newId);
 	    console.log('Registered new id.', newId);
 	});
+
+	// TODO Register a callback when identification succeeds and set the received settings on the state.
     }
 
     render() {
         return (
-            <h1 className={styles.title}>Homeboard</h1>
+            <div>
+		<View refs={refs} />
+	    </div>
         );
     }
 }
