@@ -4,11 +4,6 @@ import io from 'socket.io-client';
 import styles from '../css/main.css';
 import View from './widgets/view';
 
-// Received from api
-const refs = [
-    'admin/edit'
-];
-
 class App extends Component {
     constructor(props) {
         super(props);
