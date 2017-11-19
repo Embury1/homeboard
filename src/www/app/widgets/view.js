@@ -12,6 +12,12 @@ export default function(props) {
 	return <View key={ref} />;
     });
 
+    if (!views.length) {
+	const ref = 'placeholder/view';
+	const Placeholder = toView(ref);
+	views.push(<Placeholder key={ref} />);
+    }
+
     return (
 	<div>{views}</div>
     );
