@@ -13,7 +13,10 @@ class App extends Component {
     constructor(props) {
         super(props);
 	this.state = {
-	    devicesSocket: io('http://localhost:8081/devices', {path: '/ws'})
+	    devicesSocket: io('http://localhost:8081/devices', {path: '/ws'}),
+	    settings: {
+		refs: []
+	    }
 	};
 	
 	this.state.devicesSocket.on('identify', (cb) => {
@@ -25,13 +28,15 @@ class App extends Component {
 	    console.log('Registered new id.', newId);
 	});
 
-	// TODO Register a callback when identification succeeds and set the received settings on the state.
+	this.state.devicesSocket.on('initialize', (settings) => {
+	    this.setState({ settings: settings });
+	});
     }
 
     render() {
         return (
             <div>
-		<View refs={refs} />
+		<View refs={this.state.settings.refs} />
 	    </div>
         );
     }
