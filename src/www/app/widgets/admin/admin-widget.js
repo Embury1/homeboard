@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-function edit() {
-    return <h2>Admin Edit</h2>;
+class AdminEdit extends Component {
+    render() {
+	return <h2>Admin Edit</h2>;
+    }
 }
 
-function view() {
-    return <h2>Admin View</h2>;
+class AdminView extends Component {
+    render() {
+	return <h2>Admin View</h2>;
+    }
 }
 
-export { edit, view };
+export { AdminEdit as edit, AdminView as view };
