@@ -1,0 +1,40 @@
+@import './variables.css';
+
+.form {
+    height: 100%;
+    lost-utility: clearfix;
+    width: 70%;
+}
+
+.column {
+    lost-column: 1/2;
+}
+
+.devices {
+    margin: 0 0 1em;
+    width: 100%;
+}
+
+.refs {
+    display: block;
+    height: 10em;
+    width: 100%;
+}
+
+.name {
+    display: block;
+    margin: 0 0 1em;
+    width: 100%;
+}
+
+.info {
+    width: 100%;
+}
+
+.created {
+    text-align: left;
+}
+
+.connected {
+    text-align: left;
+}

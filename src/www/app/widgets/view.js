@@ -9,7 +9,7 @@ const toView = (ref) => {
 export default function(props) {
     const views = props.refs.map((ref) => {
 	const View = toView(ref);
-	return <View key={ref} />;
+	return <View key={ref} {...props} />;
     });
 
     if (!views.length) {

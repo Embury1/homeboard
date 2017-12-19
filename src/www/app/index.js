@@ -15,12 +15,15 @@ class App extends Component {
 	};
 	
 	this.state.devicesSocket.on('identify', (cb) => {
-	    cb(localStorage.getItem('deviceId'));
+	    const deviceId = localStorage.getItem('deviceId');
+	    cb(deviceId);
+	    this.setState({ deviceId });
 	});
 	
 	this.state.devicesSocket.on('register', (newId) => {
 	    localStorage.setItem('deviceId', newId);
 	    console.log('Registered new id.', newId);
+	    this.setState({ deviceId: newId });
 	});
 
 	this.state.devicesSocket.on('initialize', (settings) => {
@@ -31,7 +34,7 @@ class App extends Component {
     render() {
         return (
             <div>
-		<View refs={this.state.settings.refs} />
+		<View refs={this.state.settings.refs} {...this.state} />
 	    </div>
         );
     }

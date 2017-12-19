@@ -1,3 +1,9 @@
-.title {
-    color: red;
+@import './variables.css';
+
+:global(body) {
+    background: var(--bgColor);
+    box-sizing: border-box;
+    color: var(--fgColor);
+    margin: 0;
+    padding: 2em;
 }
