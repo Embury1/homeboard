@@ -4,6 +4,8 @@ import * as widgets from '../widgets';
 import styles from '../../../css/admin-edit.css';
 import * as _ from 'lodash';
 
+const ADMIN_EDIT_REF = 'admin/edit';
+
 class AdminEdit extends Component {
     constructor(props) {
 	super(props);
@@ -21,7 +23,7 @@ class AdminEdit extends Component {
 
     componentDidMount() {
 	this.props.devicesSocket.emit('get:list', (devices) => {
-	    this.setState({devices, currentDevice: devices[0]});
+	    this.setState({devices, currentDevice: devices[0], selectedRefs: [].concat(devices[0].settings.refs)});
 	});
     }
 
@@ -32,11 +34,17 @@ class AdminEdit extends Component {
     };
 
     selectRefs = (event) => {
-	const options = event.target.options;
-
-	const refs = [].concat(Array.apply(null, options).filter((option) => {
-	    return option.selected;
-	}).map((option) => option.value));
+	const options = Array.apply(null, event.target.options);
+	const refs = this.state.selectedRefs;
+	
+	options.forEach((option) => {
+	    const ref = option.value;
+	    if (option.selected && !_.includes(refs, ref)) {
+		refs.push(ref);
+	    } else if (!option.selected && _.includes(refs, ref)) {
+		refs.splice(refs.indexOf(ref), 1);
+	    }
+	});
 
 	this.setState({ selectedRefs: refs });
     };
@@ -66,13 +74,12 @@ class AdminEdit extends Component {
 
     render() {
 	const deviceOptions = this.state.devices.map((device) => {
-	    console.log(device.settings.name);
 	    return (
 		<option value={device._id} key={device._id}>{device._id} {device.settings.name}</option>
 	    );
 	});
 
-	const refOptions = this.state.refs.filter((ref) => this.props.deviceId !== this.state.currentDevice._id || ref !== 'admin/edit').map((ref) => {
+	const refOptions = this.state.refs.filter((ref) => ref !== 'placeholder/view' && (this.props.deviceId !== this.state.currentDevice._id || ref !== ADMIN_EDIT_REF)).map((ref) => {
 	    return (
 		<option value={ref} key={ref}>{ref}</option>
 	    );
