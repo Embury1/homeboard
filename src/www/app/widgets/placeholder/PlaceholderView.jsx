@@ -1,7 +1,7 @@
 import React from 'react';
 
-function view() {
+function PlaceholderView() {
     return <h2>No widgets selected</h2>;
 }
 
-export { view };
+export { PlaceholderView };

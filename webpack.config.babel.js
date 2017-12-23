@@ -16,7 +16,7 @@ const cfg = (
 export default [
     // client
     {
-        entry: path.resolve('src/www/app/index.js'),
+        entry: path.resolve('src/www/app/App.jsx'),
         output: {
             path: path.resolve('dist/assets'),
             filename: 'bundle.js',

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import moment from 'moment-timezone';
-import * as widgets from '../widgets';
+import * as Widgets from '../Widgets';
 import styles from '../../../css/admin-edit.css';
 import * as _ from 'lodash';
 
-const ADMIN_EDIT_REF = 'admin/edit';
+const ADMIN_EDIT_REF = 'Admin/Edit';
+const PLACEHOLDER_VIEW_REF = 'Placeholder/View';
 
 class AdminEdit extends Component {
     constructor(props) {
@@ -13,8 +14,8 @@ class AdminEdit extends Component {
 	    devices: [],
 	    currentDevice: { settings: { name: '' }},
 	    selectedRefs: [],
-	    refs: Object.keys(widgets).reduce((refs, widget) => {
-		return refs.concat(Object.keys(widgets[widget]).map((mode) => {
+	    refs: Object.keys(Widgets).reduce((refs, widget) => {
+		return refs.concat(Object.keys(Widgets[widget]).map((mode) => {
 		    return `${widget}/${mode}`;
 		}));
 	    }, [])
@@ -60,7 +61,8 @@ class AdminEdit extends Component {
     save = (event) => {
 	event.preventDefault();
 	const refs = this.state.selectedRefs;
-	const device = _.merge({}, this.state.currentDevice, { settings: { refs }});
+	const device = Object.assign({}, this.state.currentDevice);
+	device.settings.refs = refs;
 	this.props.devicesSocket.emit('save:device', device, (result) => {
 	    console.log('Saved device.', result);
 	});
@@ -79,7 +81,7 @@ class AdminEdit extends Component {
 	    );
 	});
 
-	const refOptions = this.state.refs.filter((ref) => ref !== 'placeholder/view' && (this.props.deviceId !== this.state.currentDevice._id || ref !== ADMIN_EDIT_REF)).map((ref) => {
+	const refOptions = this.state.refs.filter((ref) => ref !== PLACEHOLDER_VIEW_REF && (this.props.deviceId !== this.state.currentDevice._id || ref !== ADMIN_EDIT_REF)).map((ref) => {
 	    return (
 		<option value={ref} key={ref}>{ref}</option>
 	    );

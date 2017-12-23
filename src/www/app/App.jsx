@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM, { render } from 'react-dom';
 import io from 'socket.io-client';
 import styles from '../css/main.css';
-import View from './widgets/view';
+import View from './widgets/View.jsx';
 
 class App extends Component {
     constructor(props) {

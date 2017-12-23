@@ -1,9 +1,9 @@
 import React from 'react';
-import * as widgets from './widgets';
+import * as Widgets from './Widgets';
 
 const toView = (ref) => {
     const [widget, mode] = ref.split('/');
-    return widgets[widget][mode];
+    return Widgets[widget][mode];
 };
 
 export default function(props) {
@@ -13,7 +13,7 @@ export default function(props) {
     });
 
     if (!views.length) {
-	const ref = 'placeholder/view';
+	const ref = 'Placeholder/View';
 	const Placeholder = toView(ref);
 	views.push(<Placeholder key={ref} />);
     }
