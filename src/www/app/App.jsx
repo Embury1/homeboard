@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import ReactDOM, { render } from 'react-dom';
 import io from 'socket.io-client';
-import styles from '../css/main.css';
+import styles from '../css/global.css';
 import View from './widgets/View.jsx';
 
 class App extends Component {
     constructor(props) {
 	super(props);
 	this.state = {
-	    devicesSocket: io('http://localhost:8081/devices', {path: '/ws'}),
+	    devicesSocket: io('http://localhost:8081/devices', { path: '/ws' }),
+	    recipesSocket: io('http://localhost:8081/recipes', { path: '/ws' }),
 	    settings: {
 		refs: []
 	    }

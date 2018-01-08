@@ -2,8 +2,16 @@
 
 :global(body) {
     background: var(--bgColor);
-    box-sizing: border-box;
     color: var(--fgColor);
     margin: 0;
     padding: 2em;
+
+    & *, *:before, *:after {
+	box-sizing: border-box;
+    }
+}
+
+:global(.label) {
+    display: block;
+    margin: 1.2em 0 .4em;
 }

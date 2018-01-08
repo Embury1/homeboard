@@ -1,6 +1,7 @@
 import http from 'http';
 import express from 'express';
 import devices from './devices/devices';
+import recipes from './recipes/recipes';
 import socketio from 'socket.io';
 import mongoose from 'mongoose';
 import log from './log';
@@ -21,6 +22,7 @@ mongoose.connect(process.env.DB_URL, (err) => {
 });
 
 devices(io);
+recipes(io);
 
 if (env === 'production') {
     app.use(express.static('assets'));
