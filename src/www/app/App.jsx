@@ -10,6 +10,7 @@ class App extends Component {
 	this.state = {
 	    devicesSocket: io('http://localhost:8081/devices', { path: '/ws' }),
 	    recipesSocket: io('http://localhost:8081/recipes', { path: '/ws' }),
+	    vendorProductsSocket: io('http://localhost:8081/vendorProducts', { path: '/ws' }),
 	    settings: {
 		refs: []
 	    }

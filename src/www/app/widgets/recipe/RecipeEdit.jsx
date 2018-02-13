@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 import styles from './RecipeEdit.css';
 import Recipe from './Recipe.jsx';
 
@@ -11,10 +12,13 @@ class RecipeEdit extends Component {
 	this.state = {
 	    currentRecipe: EMPTY_RECIPE,
 	    newIngredient: EMPTY_INGREDIENT,
+	    products: [],
 	    recipes: []
 	};
+    }
 
-	props.recipesSocket.on('saved:recipe', (savedRecipe) => {
+    componentDidMount() {
+	this.props.recipesSocket.on('saved:recipe', (savedRecipe) => {
 	    const recipes = [...this.state.recipes];
 	    // Replace recipe or push to end if it's new.
 	    recipes[~(~_.findIndex(recipes, { _id: savedRecipe._id }) || ~recipes.length)] = savedRecipe;
@@ -22,15 +26,17 @@ class RecipeEdit extends Component {
 	    this.setState({ recipes, currentRecipe });
 	});
 
-	props.recipesSocket.on('deleted:recipe', (deletedRecipe) => {
+	this.props.recipesSocket.on('deleted:recipe', (deletedRecipe) => {
 	    const recipes = this.state.recipes.filter((recipe) => recipe._id !== deletedRecipe._id);
 	    this.setState({ recipes });
 	});
-    }
 
-    componentDidMount() {
 	this.props.recipesSocket.emit('get:recipes', (recipes) => {
 	    this.setState({ recipes });
+	});
+	
+	this.props.vendorProductsSocket.emit('get:products', (products) => {
+	    this.setState({ products });
 	});
     }
 
@@ -114,7 +120,7 @@ class RecipeEdit extends Component {
 	    return (
 		<div className={styles.recipeIngredientRow} key={index}>
 		    <div className={styles.recipeIngredient}>
-			{ingredient.amount} {ingredient.unit} {ingredient.name}
+			{ingredient.amount}{ingredient.unit} {ingredient.name}
 		    </div>
 
 		    <div className={styles.removeRecipeIngredient}>
@@ -122,6 +128,10 @@ class RecipeEdit extends Component {
 		    </div>
 		</div>
 	    );
+	});
+
+	const productOptions = _.sortBy(this.state.products, [(p) => p._id]).map((product) => {
+	    return <option value={product._id} key={product._id}>{product._id}</option>; 
 	});
 
 	return (
@@ -150,14 +160,17 @@ class RecipeEdit extends Component {
 			<div className={styles.newIngredient}>
 			    <div className={styles.newIngredientMeasure}>
 				<input type="number" name="amount" value={this.state.newIngredient.amount} className={styles.newIngredientAmount}
-				    onChange={this.handleIngredientChange} step="0.01" min="0" max="999.99" placeholder="Amount" />
+				    onChange={this.handleIngredientChange} step="1" min="0" max="999.99" placeholder="Amount" />
 
 				<input type="text" name="unit" value={this.state.newIngredient.unit} className={styles.newIngredientUnit}
 				    onChange={this.handleIngredientChange} placeholder="Unit" />
 			    </div>
 
-			    <input type="text" name="name" value={this.state.newIngredient.name} className={styles.newIngredientName}
-				onChange={this.handleIngredientChange} placeholder="Ingredient name" />
+			    <select name="name" value={this.state.newIngredient.name} className={styles.newIngredientProduct}
+				onChange={this.handleIngredientChange}>
+				<option value=""></option>
+				{productOptions}
+			    </select>
 
 			    <button type="button" className={styles.addNewIngredient} onClick={this.handleAddIngredient}>+</button>
 			</div>

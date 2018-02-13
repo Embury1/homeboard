@@ -6,7 +6,7 @@ import styles from './Recipe.css';
 export default function (props) {
     const recipe = props.recipe;
     const ingredients = recipe.ingredients.map((ingredient, index) => {
-	return <li key={index}>{ingredient.amount} {ingredient.unit} {ingredient.name}</li>;
+	return <li key={index}>{ingredient.amount}{ingredient.unit} {ingredient.name}</li>;
     });
 
     return (

@@ -1,6 +1,8 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
-const schema = new mongoose.Schema({
+const { ObjectId } = Schema.Types;
+
+const schema = new Schema({
     name: { type: String, required: true },
     servings: { type: Number, required: true },
     time: { type: Number },
