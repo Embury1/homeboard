@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+
 import moment from 'moment-timezone';
-import * as Widgets from '../Widgets';
-import styles from '../../../css/admin-edit.css';
 import * as _ from 'lodash';
+
+import * as Widgets from '../Widgets';
+import styles from './AdminEdit.css';
 
 const ADMIN_EDIT_REF = 'Admin/Edit';
 const PLACEHOLDER_VIEW_REF = 'Placeholder/View';
@@ -113,8 +115,8 @@ class AdminEdit extends Component {
 			</tbody>
 		    </table>
 
-		    <button type="submit" onClick={this.save}>Save</button>
-		    <button type="button" onClick={this.cancel}>Cancel</button>
+		    <button type="submit" className={styles.save} onClick={this.save}>Save</button>
+		    <button type="button" className={styles.cancel} onClick={this.cancel}>Cancel</button>
 		</section>
 
 		<section className={styles.column}>

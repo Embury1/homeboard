@@ -1,0 +1,60 @@
+@import '../../../css/base.css';
+
+.form {
+    composes: row;
+    height: 100%;
+}
+
+.column {
+    lost-column: 1/4;
+}
+
+/*
+ * Left column
+ */
+
+.devices {
+    composes: input;
+    margin: 0 0 1em;
+    width: 100%;
+}
+
+.info {
+    margin-bottom: 3em;
+    width: 100%;
+}
+
+.created {
+    text-align: left;
+}
+
+.connected {
+    text-align: left;
+}
+
+.save {
+    composes: btn;
+    margin-right: 1em;
+}
+
+.cancel {
+    composes: btn;
+}
+
+/*
+ * Right column
+ */
+
+.name {
+    composes: input;
+    display: block;
+    margin: 0 0 1em;
+    width: 100%;
+}
+
+.refs {
+    composes: input;
+    display: block;
+    height: 10em;
+    width: 100%;
+}
