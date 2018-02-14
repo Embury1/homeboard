@@ -3,15 +3,11 @@
 :global(body) {
     background: var(--bgColor);
     color: var(--fgColor);
+    font-family: 'Titillium Web', sans-serif;
     margin: 0;
     padding: 2em;
 
     & *, *:before, *:after {
 	box-sizing: border-box;
     }
-}
-
-:global(.label) {
-    display: block;
-    margin: 1.2em 0 .4em;
 }
