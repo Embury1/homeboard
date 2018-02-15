@@ -1,0 +1,29 @@
+@import '../../css/base.css';
+
+.nav {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    font-size: 3em;
+    height: 100%;
+    justify-content: center;
+    opacity: .3;
+    position: absolute;
+    top: 0;
+    transition: all 300ms ease-out;
+    width: .6em;
+
+    &:hover {
+	opacity: 1;
+    }
+}
+
+.previous {
+    composes: nav;
+    left: 0;
+}
+
+.next {
+    composes: nav;
+    right: 0;
+}
