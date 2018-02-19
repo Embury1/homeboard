@@ -40,6 +40,10 @@ class RecipeEdit extends Component {
 	});
     }
 
+    componentWillUnmount() {
+	this.props.recipesSocket.off();
+    }
+
     handleRecipeSelectionChange = (event) => {
 	const currentRecipe = Object.assign({}, EMPTY_RECIPE, this.state.recipes.find((recipe) => recipe._id === event.target.value));
 	this.setState({ currentRecipe });

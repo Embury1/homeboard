@@ -35,6 +35,10 @@ class App extends Component {
 	});
     }
 
+    componentWillUnmount() {
+	this.state.devicesSocket.off();
+    }
+
     render() {
 	return (
 	    <div>
