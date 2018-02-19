@@ -1,12 +1,23 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import ReactMarkdown from 'react-markdown';
 import FontAwesome from 'font-awesome/css/font-awesome.css';
+
 import styles from './Recipe.css';
 
-export default function (props) {
+Recipe.propTypes = {
+    recipe: PropTypes.object.isRequired,
+    servings: PropTypes.number
+};
+
+export default function Recipe(props) {
     const recipe = props.recipe;
+    const servings = props.servings || recipe.servings;
+
     const ingredients = recipe.ingredients.map((ingredient, index) => {
-	return <li key={index}>{ingredient.amount}{ingredient.unit} {ingredient.name}</li>;
+	const amount = ingredient.amount / recipe.servings * servings;
+	return <li key={index}>{amount}{ingredient.unit} {ingredient.name}</li>;
     });
 
     return (
@@ -14,7 +25,7 @@ export default function (props) {
 	    <h1>{recipe.name || 'No name'}</h1>
 
 	    <i className={[FontAwesome.fa, FontAwesome['fa-cutlery']].join(' ')}></i> 
-	    <span className={styles.servings}>{recipe.servings} serving{recipe.servings != 1 && 's'}</span>
+	    <span className={styles.servings}>{servings} serving{servings !== 1 && 's'}</span>
 	    <i className={[FontAwesome.fa, FontAwesome['fa-hourglass-half']].join(' ')}></i> 
 	    <span className={styles.time}>{recipe.time} min</span>
 

@@ -1,0 +1,21 @@
+@import '../../../css/base.css';
+
+.recipes {
+    composes: input;
+    margin-bottom: 1em;
+}
+
+.controls {
+    align-items: center;
+    display: flex;
+}
+
+.randomize {
+    composes: btn;
+    margin-right: 2em;
+}
+
+.servings {
+    composes: slider;
+    width: 260px;
+}

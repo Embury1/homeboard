@@ -4,6 +4,10 @@
 
 @lost flexbox flex;
 
+.row {
+    lost-center: 100%;
+}
+
 .label {
     composes: label from global;
     display: block;
@@ -24,12 +28,12 @@
     transition: all 300ms ease-out;
 
     &:hover, &:focus {
-        border-color: #22C365;
-        box-shadow: 0 0 0 8px rgba(34, 195, 101, 0.1);
+	border-color: #22C365;
+	box-shadow: 0 0 0 8px rgba(34, 195, 101, 0.1);
     }
 
     &:focus {
-        outline: none;
+	outline: none;
     }
 }
 
@@ -45,15 +49,46 @@
     width: 100%;
 
     &:hover, &:focus {
-        border-color: #22C365;
+	border-color: #22C365;
     }
 
     &:focus {
-        box-shadow: 0 0 0 8px rgba(34, 195, 101, 0.1);
-        outline: none;
+	box-shadow: 0 0 0 8px rgba(34, 195, 101, 0.1);
+	outline: none;
     }
 }
 
-.row {
-    lost-center: 100%;
+.slider {
+    -webkit-appearance: none;
+    background: transparent;
+    height: 3em;
+
+    &:focus {
+	outline: none;
+    }
+
+    &::-webkit-slider-runnable-track {
+	animate: 0.2s;
+	background: #222;
+	border: 1px solid #444;
+	cursor: pointer;
+	height: 12px;
+	width: 100%;
+    }
+
+    &::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	background: #222;
+	border: 1px solid #444;
+	cursor: pointer;
+	height: 30px;
+	margin-top: -11px;
+	transition: all 300ms ease-out;
+	width: 30px;
+    }
+
+    &:focus::-webkit-slider-thumb {
+	border-color: #22C365;
+	box-shadow: 0 0 0 8px rgba(34, 195, 101, 0.1);
+    }
 }
