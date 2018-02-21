@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import ReactDOM, { render } from 'react-dom';
+
 import io from 'socket.io-client';
-import styles from '../css/global.css';
+
+import styles from './App.css';
 import View from './widgets/View.jsx';
 
 class App extends Component {
@@ -41,10 +43,11 @@ class App extends Component {
 
     render() {
 	return (
-	    <div>
-		<i>{this.state.settings.name}</i>
+	    <React.Fragment>
+		<p className={styles.deviceName}>{this.state.settings.name}</p>
+		<p className={styles.deviceId}>{this.state.deviceId}</p>
 		<View refs={this.state.settings.refs} {...this.state} />
-	    </div>
+	    </React.Fragment>
 	);
     }
 }
