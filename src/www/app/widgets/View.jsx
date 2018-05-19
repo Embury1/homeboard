@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import FontAwesome from 'font-awesome/css/font-awesome.css';
 
+import { ErrorBoundary } from '../ErrorBoundary.jsx';
 import * as Widgets from './Widgets';
 import styles from './View.css';
 
@@ -50,7 +51,9 @@ class View extends Component {
 		    </div>
 		}
 
-		<Widget {...this.props} />
+				<ErrorBoundary>
+					<Widget {...this.props} />
+				</ErrorBoundary>
 
 		{this.props.refs.length > 1 && this.state.refIndex < (this.props.refs.length - 1) &&
 		    <div className={styles.next} onClick={this.next}>
