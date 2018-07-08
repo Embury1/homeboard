@@ -7,11 +7,11 @@ const schema = new Schema({
     servings: { type: Number, required: true },
     time: { type: Number },
     ingredients: [
-	{
-	    amount: { type: Number, required: true },
-	    unit: { type: String },
-	    name: { type: String, required: true }
-	}
+        {
+            amount: { type: Number, required: true },
+            unit: { type: String },
+            name: { type: String, required: true }
+        }
     ],
     instructions: { type: String }
 });

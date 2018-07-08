@@ -1,8 +1,8 @@
-export default function(io) {
+export default function (io) {
     const nsp = io.of('/views');
 
     nsp.on('connect', (socket) => {
-	socket.on('register', (view) => {
-	});
+        socket.on('register', (view) => {
+        });
     });
 }

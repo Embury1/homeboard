@@ -8,8 +8,8 @@ const env = process.env.NODE_ENV;
 
 const cfg = (
     env === 'production'
-    ? prodCfg
-    : devCfg
+        ? prodCfg
+        : devCfg
 );
 
 // common configuration

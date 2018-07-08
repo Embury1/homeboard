@@ -8,7 +8,7 @@ const productSchema = new Schema({
 const vendorSchema = new Schema({
     prefix: { type: String, required: true },
     name: { type: String, required: true },
-    products: [ productSchema ]
+    products: [productSchema]
 });
 
 const Product = mongoose.model('VendorProduct', productSchema);

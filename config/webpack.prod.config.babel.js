@@ -1,20 +1,20 @@
 export default {
     server: {
-        devServer: { },
+        devServer: {},
         plugins: [
 
         ],
         rules: [
-            
+
         ]
     },
     client: {
-        devServer: { },
+        devServer: {},
         plugins: [
 
         ],
         rules: [
-            
+
         ]
     }
 };

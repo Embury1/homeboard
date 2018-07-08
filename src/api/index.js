@@ -13,7 +13,7 @@ const server = http.createServer(app);
 const env = process.env.NODE_ENV || 'dev';
 const port = process.env.PORT || 8081;
 
-const io = socketio(server, {path: '/ws'});
+const io = socketio(server, { path: '/ws' });
 
 dotenv.config();
 
