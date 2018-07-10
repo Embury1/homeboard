@@ -14,10 +14,15 @@ class View extends Component {
 		};
 	}
 
-	componentWillReceiveProps(nextProps) {
-		const refIndex = this.state.refIndex;
-		if (refIndex > 0 && refIndex >= (nextProps.refs.length - 1)) {
-			this.setState({ refIndex: nextProps.refs.length - 1 });
+	componentDidUpdate() {
+		let refIndex = Number(localStorage.getItem('refIndex'));
+
+		if (refIndex >= this.props.length) {
+			refIndex = this.props.length - 1;
+		}
+
+		if (refIndex !== this.state.refIndex) {
+			this.setState({ refIndex });
 		}
 	}
 
@@ -26,26 +31,28 @@ class View extends Component {
 		return Widgets[widget][mode];
 	};
 
-	previous = (event) => {
-		this.setState((prevState) => ({ refIndex: prevState.refIndex - 1 }));
+	previous = () => {
+		const refIndex = Math.max(this.state.refIndex - 1, 0);
+		localStorage.setItem('refIndex', refIndex);
+		this.setState({ refIndex });
 	};
 
-	next = (event) => {
-		this.setState((prevState) => ({ refIndex: prevState.refIndex + 1 }));
+	next = () => {
+		const refIndex = Math.min(this.state.refIndex + 1, this.props.refs.length - 1);
+		localStorage.setItem('refIndex', refIndex);
+		this.setState({ refIndex });
 	};
 
 	render() {
 		const refIndex = this.state.refIndex;
-
 		const ref = this.props.refs.length
-			? this.props.refs[this.state.refIndex]
+			? this.props.refs[refIndex]
 			: 'Placeholder/View';
-
 		const Widget = this.toView(ref);
-
+		
 		return (
 			<React.Fragment>
-				{this.props.refs.length > 1 && this.state.refIndex > 0 &&
+				{this.props.refs.length > 1 && refIndex > 0 &&
 					<div className={styles.previous} onClick={this.previous}>
 						<i className={[FontAwesome.fa, FontAwesome['fa-angle-left']].join(' ')}></i>
 					</div>
@@ -55,7 +62,7 @@ class View extends Component {
 					<Widget {...this.props} />
 				</ErrorBoundary>
 
-				{this.props.refs.length > 1 && this.state.refIndex < (this.props.refs.length - 1) &&
+				{this.props.refs.length > 1 && refIndex < (this.props.refs.length - 1) &&
 					<div className={styles.next} onClick={this.next}>
 						<i className={[FontAwesome.fa, FontAwesome['fa-angle-right']].join(' ')}></i>
 					</div>
