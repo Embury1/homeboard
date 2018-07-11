@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import FontAwesome from 'font-awesome/css/font-awesome.css';
 
 import { ErrorBoundary } from '../ErrorBoundary.jsx';
+import { NotFound } from './notFound/NotFound.jsx';
 import * as Widgets from './Widgets';
 import styles from './View.css';
 
@@ -26,9 +27,13 @@ class View extends Component {
 		}
 	}
 
-	toView = (ref) => {
-		const [widget, mode] = ref.split('/');
-		return Widgets[widget][mode];
+	resolveRef = (ref = 'Placeholder/View') => {
+		const [widgetRef, modeRef] = ref.split('/');
+		if (!Widgets.hasOwnProperty(widgetRef) || !Widgets[widgetRef].hasOwnProperty(modeRef)) {
+			return NotFound;
+		}
+		
+		return Widgets[widgetRef][modeRef];
 	};
 
 	previous = () => {
@@ -45,10 +50,8 @@ class View extends Component {
 
 	render() {
 		const refIndex = this.state.refIndex;
-		const ref = this.props.refs.length
-			? this.props.refs[refIndex]
-			: 'Placeholder/View';
-		const Widget = this.toView(ref);
+		const ref = this.props.refs[refIndex];
+		const Widget = this.resolveRef(ref);
 		
 		return (
 			<React.Fragment>
