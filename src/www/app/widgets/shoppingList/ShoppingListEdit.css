@@ -6,6 +6,7 @@
     cursor: pointer;
     display: flex;
     font-weight: 400;
+    position: relative;
     user-select: none;
     width: 100%;
 }
