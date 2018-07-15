@@ -34,7 +34,7 @@ class ShoppingListEdit extends Component {
 	};
 
 	render() {
-		const shoppingListItems = this.state.shoppingListItems.map((item, index) => {
+		const shoppingListItems = _.orderBy(this.state.shoppingListItems, ['created'], ['desc']).map((item, index) => {
 			return (
 				<p className={styles.item} onClick={() => this.toggleItemStatus(item)} key={index}>
 					<span className={styles.itemName}>{item.amount}{item.unit} {item.name}</span>
