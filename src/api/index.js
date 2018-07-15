@@ -1,12 +1,15 @@
 import http from 'http';
+
 import express from 'express';
+import socketio from 'socket.io';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+
+import log from './log';
 import devices from './devices/devices';
 import recipes from './recipes/recipes';
 import vendorProducts from './vendor-products/vendor-products';
-import socketio from 'socket.io';
-import mongoose from 'mongoose';
-import log from './log';
-import dotenv from 'dotenv';
+import shoppingLists from './shoppingLists/shoppingLists';
 
 const app = express();
 const server = http.createServer(app);
@@ -25,6 +28,7 @@ mongoose.connect(process.env.DB_URL, (err) => {
 devices(io);
 recipes(io);
 vendorProducts(io);
+shoppingLists(io);
 
 if (env === 'production') {
     app.use(express.static('assets'));

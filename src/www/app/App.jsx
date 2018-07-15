@@ -13,6 +13,7 @@ class App extends Component {
 			devicesSocket: io('http://localhost:8081/devices', { path: '/ws' }),
 			recipesSocket: io('http://localhost:8081/recipes', { path: '/ws' }),
 			vendorProductsSocket: io('http://localhost:8081/vendorProducts', { path: '/ws' }),
+			shoppingListsSocket: io('http://localhost:8081/shoppingLists', { path: '/ws' }),
 			settings: {
 				refs: []
 			}

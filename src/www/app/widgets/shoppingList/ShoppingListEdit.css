@@ -1,0 +1,24 @@
+@import '../../../css/base.css';
+
+.item {
+    composes: input;
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    font-weight: 400;
+    user-select: none;
+    width: 100%;
+}
+
+.itemName {
+    margin: 0 auto 0 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.itemCheck {
+    color: #22C365;
+    font-size: 1.5em;
+    margin: 0 0 0 .2em;
+}
