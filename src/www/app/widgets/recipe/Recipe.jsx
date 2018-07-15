@@ -17,7 +17,14 @@ export default function Recipe(props) {
 
 	const ingredients = recipe.ingredients.map((ingredient, index) => {
 		const amount = ingredient.amount / recipe.servings * servings;
-		return <li key={index}>{amount}{ingredient.unit} {ingredient.name}</li>;
+		return (
+			<li key={index}
+				{...(props.onAdd && {onClick: () => props.onAdd([ingredient])})}
+				className={props.onAdd ? `${styles.addable} ${styles.ingredient}` : styles.ingredient}
+			>
+				{amount}{ingredient.unit} {ingredient.name}
+			</li>
+		);
 	});
 
 	return (
@@ -29,8 +36,8 @@ export default function Recipe(props) {
 			<i className={[FontAwesome.fa, FontAwesome['fa-hourglass-half']].join(' ')}></i>
 			<span className={styles.time}>{recipe.time} min</span>
 
-			<h2>Ingredients</h2>
-			{ingredients.length && <ul>
+			<h2>Ingredients {props.onAdd && <i className={[styles.addAllIngredients, FontAwesome.fa, FontAwesome['fa-plus']].join(' ')} onClick={() => props.onAdd(recipe.ingredients)}></i>}</h2>
+			{ingredients.length && <ul className={styles.ingredients}>
 				{ingredients}
 			</ul> || 'No ingredients'}
 

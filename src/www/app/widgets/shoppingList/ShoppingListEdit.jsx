@@ -16,13 +16,21 @@ class ShoppingListEdit extends Component {
 	componentDidMount() {
 		this.props.shoppingListsSocket.emit('get:shoppingListItems', (shoppingListItems) => {
 			this.setState({ shoppingListItems });
+			console.log('Received list of shopping list items.', shoppingListItems);
 		});
 
-		this.props.shoppingListsSocket.on('saved:shoppingListItem', (updatedItem) => {
+		this.props.shoppingListsSocket.on('saved:shoppingListItems', (updatedItems) => {
 			const shoppingListItems = [...this.state.shoppingListItems];
-			shoppingListItems[_.findIndex(shoppingListItems, { _id: updatedItem._id })] = updatedItem;
+			for (const item of updatedItems) {
+				shoppingListItems[~(~_.findIndex(shoppingListItems, { _id: item._id }) || ~shoppingListItems.length)] = item;
+			}
 			this.setState({ shoppingListItems });
+			console.log('Received updated list of shopping list items.', updatedItems);
 		});
+	}
+
+	componentWillUnmount() {
+		this.props.shoppingListsSocket.off();
 	}
 
 	toggleItemStatus = (item) => {

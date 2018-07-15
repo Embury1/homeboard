@@ -6,10 +6,14 @@ export default function (io) {
 
     nsp.on('connect', (socket) => {
         socket.on('create:shoppingListItems', (items, cb) => {
-            ShoppingListItem.insertMany(items, (err, createdItems) => {
+            ShoppingListItem.insertMany(items.map((item) => {
+                delete item._id;
+                return item;
+            }), (err, createdItems) => {
                 if (err) return log.error(err);
                 cb(createdItems);
                 log.info('Created shopping list items.', createdItems);
+                nsp.emit('saved:shoppingListItems', createdItems);
             });
         });
 
@@ -28,7 +32,7 @@ export default function (io) {
                 if (!updatedItem) return;
                 cb(updatedItem);
                 log.info(`Saved shopping list item ${item._id}.`);
-                nsp.emit('saved:shoppingListItem', updatedItem);
+                nsp.emit('saved:shoppingListItems', [updatedItem]);
             });
         });
 

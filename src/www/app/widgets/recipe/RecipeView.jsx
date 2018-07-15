@@ -60,6 +60,12 @@ class RecipeView extends Component {
 		this.setState({ currentRecipe, adjustedServings: currentRecipe.servings });
 	};
 
+	addShoppingListItem = (ingredients) => {
+		this.props.shoppingListsSocket.emit('create:shoppingListItems', ingredients, (shoppingListItems) => {
+			console.log('Added shopping list items.', shoppingListItems);
+		});
+	};
+
 	render() {
 		const recipeOptions = this.state.recipes.map((recipe) => {
 			return <option value={recipe._id} key={recipe._id}>{recipe.name}</option>;
@@ -83,7 +89,7 @@ class RecipeView extends Component {
 				</div>
 
 				{this.state.currentRecipe._id &&
-					<Recipe recipe={this.state.currentRecipe} className={styles.preview} servings={this.state.adjustedServings} />
+					<Recipe recipe={this.state.currentRecipe} className={styles.preview} servings={this.state.adjustedServings} onAdd={this.addShoppingListItem} connected={true} />
 				}
 			</React.Fragment>
 		);
