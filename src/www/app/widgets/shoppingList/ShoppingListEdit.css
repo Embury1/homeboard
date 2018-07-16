@@ -23,3 +23,26 @@
     font-size: 1.5em;
     margin: 0 0 0 .2em;
 }
+
+.newItem {
+    composes: row;
+    align-items: flex-end;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+}
+
+.newItemProduct {
+    composes: input;
+    margin: 0 .8em 0 0;
+}
+
+.addNewItem {
+    composes: btn;
+    flex-shrink: 0;
+    margin: 0 .8em 0 0;
+}
+
+.resetNewItem {
+    composes: btn;
+    flex-shrink: 0;
+}

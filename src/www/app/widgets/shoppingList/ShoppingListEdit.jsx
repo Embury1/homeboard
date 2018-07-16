@@ -5,22 +5,21 @@ import Hammer from 'react-hammerjs';
 
 import styles from './ShoppingListEdit.css';
 
+const EMPTY_ITEM = { amount: 0, unit: '', name: '' };
+
 class ShoppingListEdit extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			newItem: EMPTY_ITEM,
 			items: [],
+			products: [],
 			pannedItemOffset: 0,
 			pannedItem: {}
 		};
 	}
 
 	componentDidMount() {
-		this.props.shoppingListsSocket.emit('get:shoppingListItems', (items) => {
-			this.setState({ items });
-			console.log('Received list of shopping list items.', items);
-		});
-
 		this.props.shoppingListsSocket.on('saved:shoppingListItems', (updatedItems) => {
 			const items = [...this.state.items];
 			for (const updatedItem of updatedItems) {
@@ -33,6 +32,15 @@ class ShoppingListEdit extends Component {
 		this.props.shoppingListsSocket.on('deleted:shoppingListItem', (deletedItem) => {
 			const items = [..._.reject(this.state.items, (item) => item._id === deletedItem._id)];
 			this.setState({ items });
+		});
+
+		this.props.shoppingListsSocket.emit('get:shoppingListItems', (items) => {
+			this.setState({ items });
+			console.log('Received list of shopping list items.', items);
+		});
+
+		this.props.vendorProductsSocket.emit('get:products', (products) => {
+			this.setState({ products });
 		});
 	}
 
@@ -71,20 +79,61 @@ class ShoppingListEdit extends Component {
 		});
 	};
 
+	itemChange = (event) => {
+		const prop = event.target.name;
+		const value = event.target.value;
+		const newItem = Object.assign({}, this.state.newItem, { [prop]: value });
+		this.setState({ newItem });
+	};
+
+	addNewItem = (event) => {
+		event.preventDefault();
+		const newItem = Object.assign({}, this.state.newItem);
+		if (!newItem.name) return;
+		this.props.shoppingListsSocket.emit('create:shoppingListItems', [newItem], (savedItems) => {
+			console.log('Added shopping list item.', savedItems[0]);
+			const newItem = Object.assign({}, EMPTY_ITEM);
+			this.setState({ newItem, newItem });
+		});
+	};
+
+	resetNewItem = () => {
+		const newItem = Object.assign({}, EMPTY_ITEM);
+		this.setState({ newItem });
+	};
+
 	render() {
 		const shoppingListItems = _.orderBy(this.state.items, ['created'], ['desc']).map((item, index) => {
 			return (
 				<Hammer key={index} onTap={() => this.toggleItemStatus(item)} onPanStart={() => this.panStart(item)} onPan={this.pan} onPanEnd={this.panEnd} direction="DIRECTION_RIGHT">
 					<p className={styles.item} style={item._id === this.state.pannedItem._id ? {left: this.state.pannedItemOffset} : {}}>
-						<span className={styles.itemName}>{item.amount}{item.unit} {item.name}</span>
+						<span className={styles.itemName}>{item.amount > 0 ? (item.amount + item.unit) : ''} {item.name}</span>
 						{ item.done && <i className={[styles.itemCheck, FontAwesome.fa, FontAwesome['fa-check']].join(' ')}></i> }
 					</p>
 				</Hammer>
 			);
 		});
 
+		const productOptions = _.sortBy(this.state.products, [(p) => p._id]).map((product) => {
+			return <option value={product._id} key={product._id}>{product._id}</option>;
+		});
+
 		return (
 			<Fragment>
+				<form name="quickAdd" onSubmit={this.addNewItem} className={styles.newItem}>
+					<select name="name" value={this.state.newItem.name} className={styles.newItemProduct}
+						onChange={this.itemChange}>
+						<option value=""></option>
+						{productOptions}
+					</select>
+
+					<button type="submit" className={styles.addNewItem} onClick={this.addNewItem}>
+						<i className={[FontAwesome.fa, FontAwesome['fa-plus']].join(' ')}></i>
+					</button>
+					<button type="button" className={styles.resetNewItem} onClick={this.resetNewItem}>
+						<i className={[FontAwesome.fa, FontAwesome['fa-times']].join(' ')}></i>
+					</button>
+				</form>
 				{shoppingListItems}
 			</Fragment>
 		);
