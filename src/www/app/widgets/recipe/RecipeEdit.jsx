@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import styles from './RecipeEdit.css';
 import Recipe from './Recipe.jsx';
+import { Select } from '../../shared/select/Select.jsx';
 
 const EMPTY_RECIPE = { name: '', servings: 1, time: 0, ingredients: [], instructions: '' };
 const EMPTY_INGREDIENT = { amount: 0, unit: '', name: '' };
@@ -90,6 +91,11 @@ class RecipeEdit extends Component {
 		this.setState({ newIngredient });
 	};
 
+	selectChange = (value) => {
+		const newIngredient = Object.assign({}, this.state.newIngredient, { name: value });
+		this.setState({ newIngredient });
+	};
+
 	handleAddIngredient = (event) => {
 		const currentRecipe = Object.assign({}, this.state.currentRecipe);
 		currentRecipe.ingredients = [...currentRecipe.ingredients, this.state.newIngredient];
@@ -134,13 +140,18 @@ class RecipeEdit extends Component {
 			);
 		});
 
-		const productOptions = _.sortBy(this.state.products, [(p) => p._id]).map((product) => {
-			return <option value={product._id} key={product._id}>{product._id}</option>;
+		const productItems = _.sortBy(this.state.products, [(p) => p._id]).map((product) => {
+			return {
+				key: product._id,
+				value: product._id,
+				text: product._id
+			};
 		});
 
 		return (
 			<div>
-				<form name="recipeForm" onSubmit={this.handleSubmit} className={styles.row}>
+				<form name="recipeForm" onSubmit={this.handleSubmit} className={styles.row} autoComplete="off">
+					<input autoComplete="off" name="hidden" type="text" style={{ display: 'none' }} />
 					<div className={styles.recipeDetailsColumn}>
 						<select value={this.state.currentRecipe._id} onChange={this.handleRecipeSelectionChange} className={styles.recipes}>
 							<option value="">New recipe</option>
@@ -170,11 +181,13 @@ class RecipeEdit extends Component {
 									onChange={this.handleIngredientChange} placeholder="Unit" />
 							</div>
 
-							<select name="name" value={this.state.newIngredient.name} className={styles.newIngredientProduct}
-								onChange={this.handleIngredientChange}>
-								<option value=""></option>
-								{productOptions}
-							</select>
+							<Select
+								items={productItems}
+								onValue={this.selectChange}
+								value={this.state.newIngredient.name}
+								tabIndex={6}
+								className={styles.newIngredientProduct}
+							></Select>
 
 							<button type="button" className={styles.addNewIngredient} onClick={this.handleAddIngredient}>+</button>
 						</div>

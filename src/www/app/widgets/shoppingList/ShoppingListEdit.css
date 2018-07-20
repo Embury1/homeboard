@@ -32,7 +32,6 @@
 }
 
 .newItemProduct {
-    composes: input;
     margin: 0 .8em 0 0;
 }
 

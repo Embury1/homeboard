@@ -4,6 +4,7 @@ import FontAwesome from 'font-awesome/css/font-awesome.css';
 import Hammer from 'react-hammerjs';
 
 import styles from './ShoppingListEdit.css';
+import { Select } from '../../shared/select/Select.jsx';
 
 const EMPTY_ITEM = { amount: 0, unit: '', name: '' };
 
@@ -86,6 +87,11 @@ class ShoppingListEdit extends Component {
 		this.setState({ newItem });
 	};
 
+	selectChange = (value) => {
+		const newItem = Object.assign({}, this.state.newItem, { name: value });
+		this.setState({ newItem });
+	};
+
 	addNewItem = (event) => {
 		event.preventDefault();
 		const newItem = Object.assign({}, this.state.newItem);
@@ -114,18 +120,25 @@ class ShoppingListEdit extends Component {
 			);
 		});
 
-		const productOptions = _.sortBy(this.state.products, [(p) => p._id]).map((product) => {
-			return <option value={product._id} key={product._id}>{product._id}</option>;
+		const productItems = _.sortBy(this.state.products, [(p) => p._id]).map((product) => {
+			return {
+				key: product._id,
+				value: product._id,
+				text: product._id
+			};
 		});
 
 		return (
 			<Fragment>
-				<form name="quickAdd" onSubmit={this.addNewItem} className={styles.newItem}>
-					<select name="name" value={this.state.newItem.name} className={styles.newItemProduct}
-						onChange={this.itemChange}>
-						<option value=""></option>
-						{productOptions}
-					</select>
+				<form name="quickAdd" onSubmit={this.addNewItem} className={styles.newItem} autoComplete="off">
+					<input autoComplete="off" name="hidden" type="text" style={{ display: 'none' }} />
+					<Select
+						items={productItems}
+						onValue={this.selectChange}
+						value={this.state.newItem.name}
+						tabIndex={0}
+						className={styles.newItemProduct}
+					></Select>
 
 					<button type="submit" className={styles.addNewItem} onClick={this.addNewItem}>
 						<i className={[FontAwesome.fa, FontAwesome['fa-plus']].join(' ')}></i>

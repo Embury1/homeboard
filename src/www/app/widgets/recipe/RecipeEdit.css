@@ -76,7 +76,6 @@
 }
 
 .newIngredientProduct {
-    composes: input;
     flex-shrink: 1;
     margin-right: 30px;
 }
