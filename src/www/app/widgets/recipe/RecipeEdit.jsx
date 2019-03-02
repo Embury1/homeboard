@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import vars from '../../vars';
 import styles from './RecipeEdit.css';
 import Recipe from './Recipe.jsx';
 import { Select } from '../../shared/select/Select.jsx';
@@ -32,13 +33,23 @@ class RecipeEdit extends Component {
 			this.setState({ recipes });
 		});
 
-		this.props.recipesSocket.emit('get:recipes', (recipes) => {
-			this.setState({ recipes });
-		});
+		fetch(`${vars.apiBaseUrl}/api/recipes`)
+			.then((res) => {
+				return res.json();
+			}).then((recipes) => {
+				this.setState({ recipes });
+			}).catch((err) => {
+				// TODO: Handle error
+			});
 
-		this.props.vendorProductsSocket.emit('get:products', (products) => {
-			this.setState({ products });
-		});
+		fetch(`${vars.apiBaseUrl}/api/products`)
+			.then((res) => {
+				return res.json();
+			}).then((products) => {
+				this.setState({ products });
+			}).catch((err) => {
+				// TODO: Handle error
+			});
 	}
 
 	componentWillUnmount() {
@@ -51,11 +62,20 @@ class RecipeEdit extends Component {
 	};
 
 	handleSubmit = (event) => {
-		this.props.recipesSocket.emit('save:recipe', this.state.currentRecipe, (recipe) => {
-			console.log('Saved recipe.', recipe);
+		const recipe =  Object.assign({}, this.state.currentRecipe);
+		fetch(`${vars.apiBaseUrl}/api/recipes`, {
+			method: 'PUT',
+			headers: { "Content-Type": "application/json; charset=utf-8" },
+			body: JSON.stringify(recipe)
+		}).then((res) => {
+			return res.json();
+		}).then((savedRecipe) => {
+			// TODO: Confirm save
 			if (!this.state.currentRecipe._id) {
 				this.reset();
 			}
+		}).catch((err) => {
+			// TODO: Handle error
 		});
 		event.preventDefault();
 	};
@@ -68,11 +88,16 @@ class RecipeEdit extends Component {
 		const recipe = this.state.currentRecipe;
 		if (!recipe._id) return;
 		if (window.confirm(`Delete recipe '${recipe.name}'?`)) {
-			this.props.recipesSocket.emit('delete:recipe', recipe, (deletedRecipe) => {
-				console.log('Deleted recipe.', deletedRecipe);
-				const currentDevice = Object.assign({}, EMPTY_RECIPE);
-				// TODO: Somehow this doesn't reset the input fields.
-				this.setState({ currentDevice });
+			fetch(`${vars.apiBaseUrl}/api/recipes/${recipe._id}`, {
+				method: 'DELETE'
+			}).then((res) => {
+				return res.json();
+			}).then((deletedRecipe) => {
+				// TODO: Confirm delete
+				const currentRecipe = Object.assign({}, EMPTY_RECIPE);
+				this.setState({ currentRecipe });
+			}).catch((err) => {
+				// TODO: Handle error
 			});
 		}
 	};

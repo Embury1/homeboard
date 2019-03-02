@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import moment from 'moment-timezone';
 import * as _ from 'lodash';
 
+import vars from '../../vars';
 import * as Widgets from '../Widgets';
 import styles from './AdminEdit.css';
 
@@ -25,9 +26,14 @@ class AdminEdit extends Component {
 	}
 
 	componentDidMount() {
-		this.props.devicesSocket.emit('get:list', (devices) => {
-			this.setState({ devices, currentDevice: devices[0], selectedRefs: [].concat(devices[0].settings.refs) });
-		});
+		fetch(`${vars.apiBaseUrl}/api/devices`)
+			.then((res) => {
+				return res.json();
+			}).then((devices) => {
+				this.setState({ devices, currentDevice: devices[0], selectedRefs: [].concat(devices[0].settings.refs) });
+			}).catch((err) => {
+				// TODO: Handle error
+			});
 	}
 
 	setCurrentDevice = (event) => {
@@ -65,8 +71,16 @@ class AdminEdit extends Component {
 		const refs = this.state.selectedRefs;
 		const device = Object.assign({}, this.state.currentDevice);
 		device.settings.refs = refs;
-		this.props.devicesSocket.emit('save:device', device, (result) => {
-			console.log('Saved device.', result);
+		fetch(`${vars.apiBaseUrl}/api/devices/${device._id}`, {
+			method: 'PATCH',
+			headers: { "Content-Type": "application/json; charset=utf-8" },
+			body: JSON.stringify(device)
+		}).then((res) => {
+			return res.json();
+		}).then((updatedDevice) => {
+			// TODO: Confirm update
+		}).catch((err) => {
+			// TODO: Handle error
 		});
 	};
 

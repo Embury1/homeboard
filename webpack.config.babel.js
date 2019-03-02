@@ -1,6 +1,9 @@
 import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import nodeExternals from 'webpack-node-externals';
+import workboxPlugin from 'workbox-webpack-plugin';
+import Dotenv from 'dotenv-webpack';
+
 import devCfg from './config/webpack.dev.config.babel';
 import prodCfg from './config/webpack.prod.config.babel';
 
@@ -16,6 +19,7 @@ const cfg = (
 export default [
     // client
     {
+        mode: cfg.client.mode,
         entry: path.resolve('src/www/app/App.jsx'),
         output: {
             path: path.resolve('dist/assets'),
@@ -31,7 +35,11 @@ export default [
                 filename: 'index.html',
                 inject: 'body'
             }),
-            ...cfg.client.plugins
+            ...cfg.client.plugins,
+            new workboxPlugin.InjectManifest({
+                swSrc: path.join('src', 'sw.js')
+            }),
+            new Dotenv()
         ],
         module: {
             rules: [
@@ -46,6 +54,7 @@ export default [
     },
     // server
     {
+        mode: cfg.server.mode,
         entry: path.resolve('src/api/index.js'),
         output: {
             path: path.resolve('dist'),

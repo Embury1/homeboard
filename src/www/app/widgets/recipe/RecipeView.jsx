@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import vars from '../../vars';
 import Recipe from './Recipe.jsx';
 import styles from './RecipeView.css';
 
@@ -34,9 +35,14 @@ class RecipeView extends Component {
 			}
 		});
 
-		this.props.recipesSocket.emit('get:recipes', (recipes) => {
-			this.setState({ recipes });
-		});
+		fetch(`${vars.apiBaseUrl}/api/recipes`)
+			.then((res) => {
+				return res.json();
+			}).then((recipes) => {
+				this.setState({ recipes });
+			}).catch((err) => {
+				// TODO: Handle error
+			});
 	}
 
 	componentWillUnmount() {
@@ -61,8 +67,16 @@ class RecipeView extends Component {
 	};
 
 	addShoppingListItem = (ingredients) => {
-		this.props.shoppingListsSocket.emit('create:shoppingListItems', ingredients, (shoppingListItems) => {
-			console.log('Added shopping list items.', shoppingListItems);
+		fetch(`${vars.apiBaseUrl}/api/shoppingListItems`, {
+			method: 'POST',
+			headers: { "Content-Type": "application/json; charset=utf-8" },
+			body: JSON.stringify(ingredients)
+		}).then((res) => {
+			return res.json();
+		}).then((createdItems) => {
+			// TODO: Confirm created
+		}).catch((err) => {
+			// TODO: Handle error
 		});
 	};
 

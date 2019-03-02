@@ -1,5 +1,6 @@
 export default {
     server: {
+		mode: 'production',
         devServer: {},
         plugins: [
 
@@ -9,6 +10,7 @@ export default {
         ]
     },
     client: {
+		mode: 'production',
         devServer: {},
         plugins: [
 

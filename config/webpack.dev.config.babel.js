@@ -2,9 +2,10 @@ import path from 'path';
 
 export default {
 	server: {
+		mode: 'development',
 		devServer: {
 			proxy: {
-				'/api': 'http://localhost:8081'
+				'/api': process.env.API_BASE_URL
 			}
 		},
 		plugins: [],
@@ -13,6 +14,7 @@ export default {
 		]
 	},
 	client: {
+		mode: 'development',
 		devServer: {},
 		plugins: [
 

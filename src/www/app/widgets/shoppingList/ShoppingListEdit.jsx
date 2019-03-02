@@ -3,6 +3,7 @@ import React, { Component, Fragment } from 'react';
 import FontAwesome from 'font-awesome/css/font-awesome.css';
 import Hammer from 'react-hammerjs';
 
+import vars from '../../vars';
 import styles from './ShoppingListEdit.css';
 import { Select } from '../../shared/select/Select.jsx';
 
@@ -21,13 +22,11 @@ class ShoppingListEdit extends Component {
 	}
 
 	componentDidMount() {
-		this.props.shoppingListsSocket.on('saved:shoppingListItems', (updatedItems) => {
+		this.props.shoppingListsSocket.on('saved:shoppingListItem', (updatedItem) => {
 			const items = [...this.state.items];
-			for (const updatedItem of updatedItems) {
-				items[~(~_.findIndex(items, { _id: updatedItem._id }) || ~items.length)] = updatedItem;
-			}
+			items[~(~_.findIndex(items, { _id: updatedItem._id }) || ~items.length)] = updatedItem;
 			this.setState({ items });
-			console.log('Received updated list of shopping list items.', updatedItems);
+			console.log('Received updated shopping list item.', updatedItem);
 		});
 
 		this.props.shoppingListsSocket.on('deleted:shoppingListItem', (deletedItem) => {
@@ -35,14 +34,23 @@ class ShoppingListEdit extends Component {
 			this.setState({ items });
 		});
 
-		this.props.shoppingListsSocket.emit('get:shoppingListItems', (items) => {
-			this.setState({ items });
-			console.log('Received list of shopping list items.', items);
-		});
+		fetch(`${vars.apiBaseUrl}/api/shoppingListItems`)
+			.then((res) => {
+				return res.json();
+			}).then((items) => {
+				this.setState({ items });
+			}).catch((err) => {
+				// TODO: Handle error
+			});
 
-		this.props.vendorProductsSocket.emit('get:products', (products) => {
-			this.setState({ products });
-		});
+		fetch(`${vars.apiBaseUrl}/api/products`)
+			.then((res) => {
+				return res.json();
+			}).then((products) => {
+				this.setState({ products });
+			}).catch((err) => {
+				// TODO: Handle error
+			});
 	}
 
 	componentWillUnmount() {
@@ -52,8 +60,16 @@ class ShoppingListEdit extends Component {
 	toggleItemStatus = (item) => {
 		const clickedItem = Object.assign({}, item);
 		clickedItem.done = !clickedItem.done;
-		this.props.shoppingListsSocket.emit('save:shoppingListItem', clickedItem, (updatedItem) => {
-			console.log('Toggled shopping list item.', updatedItem);
+		fetch(`${vars.apiBaseUrl}/api/shoppingListItems/${clickedItem._id}`, {
+			method: 'PATCH',
+			headers: { "Content-Type": "application/json; charset=utf-8" },
+			body: JSON.stringify(clickedItem)
+		}).then((res) => {
+			return res.json();
+		}).then((updatedItem) => {
+			// TODO: Confirm save
+		}).catch((err) => {
+			// TODO: Handle error
 		});
 	};
 
@@ -70,8 +86,16 @@ class ShoppingListEdit extends Component {
 	panEnd = () => {
 		if (this.state.pannedItemOffset >= (window.innerWidth / 2)) {
 			const pannedItem = Object.assign({}, this.state.pannedItem);
-			this.props.shoppingListsSocket.emit('delete:shoppingListItem', pannedItem, (deletedItem) => {
-				console.log('Deleted shopping list item.', deletedItem);
+			fetch(`${vars.apiBaseUrl}/api/shoppingListItems/${pannedItem._id}`, {
+				method: 'DELETE',
+				headers: { "Content-Type": "application/json; charset=utf-8" },
+				body: JSON.stringify(pannedItem)
+			}).then((res) => {
+				return res.json();
+			}).then((deletedItem) => {
+				// TODO: Confirm delete
+			}).catch((err) => {
+				// TODO: Handle error
 			});
 		}
 		this.setState({
@@ -96,10 +120,18 @@ class ShoppingListEdit extends Component {
 		event.preventDefault();
 		const newItem = Object.assign({}, this.state.newItem);
 		if (!newItem.name) return;
-		this.props.shoppingListsSocket.emit('create:shoppingListItems', [newItem], (savedItems) => {
-			console.log('Added shopping list item.', savedItems[0]);
+		fetch(`${vars.apiBaseUrl}/api/shoppingListItems`, {
+			method: 'POST',
+			headers: { "Content-Type": "application/json; charset=utf-8" },
+			body: JSON.stringify(newItem)
+		}).then((res) => {
+			return res.json();
+		}).then((savedRecipe) => {
+			// TODO: Confirm save
 			const newItem = Object.assign({}, EMPTY_ITEM);
-			this.setState({ newItem, newItem });
+			this.setState({ newItem });
+		}).catch((err) => {
+			// TODO: Handle error
 		});
 	};
 
