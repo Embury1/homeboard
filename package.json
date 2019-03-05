@@ -17,6 +17,10 @@
 		"url": ""
 	},
 	"devDependencies": {
+		"concurrently": "^3.6.1",
+		"nodemon": "^1.18.7"
+	},
+	"dependencies": {
 		"autoprefixer": "^7.2.6",
 		"babel-cli": "^6.26.0",
 		"babel-core": "^6.26.3",
@@ -39,7 +43,6 @@
 		"moment-timezone": "^0.5.23",
 		"mongodb": "^3.1.10",
 		"mongoose": "^4.13.17",
-		"nodemon": "^1.18.7",
 		"postcss-loader": "^2.1.6",
 		"precss": "^2.0.0",
 		"react": "^16.6.3",
@@ -58,8 +61,5 @@
 		"webpack-merge": "4.2.1",
 		"webpack-node-externals": "^1.7.2",
 		"workbox-webpack-plugin": "^3.6.3"
-	},
-	"dependencies": {
-		"concurrently": "^3.6.1"
 	}
 }
