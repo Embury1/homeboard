@@ -176,7 +176,6 @@ class RecipeEdit extends Component {
         return (
             <div>
                 <form name="recipeForm" onSubmit={this.handleSubmit} className={styles.row} autoComplete="off">
-                    <input autoComplete="off" name="hidden" type="text" style={{ display: 'none' }} />
                     <div className={styles.recipeDetailsColumn}>
                         <select value={this.state.currentRecipe._id} onChange={this.handleRecipeSelectionChange} className={styles.recipes}>
                             <option value="">New recipe</option>
