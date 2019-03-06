@@ -7,6 +7,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import expressBasicAuth from 'express-basic-auth';
+import * as enforce from 'express-sslify';
 
 import log from './log';
 import devices from './devices/devices';
@@ -38,6 +39,7 @@ app.use((req, res, next) => {
 });
 
 if (prodEnv) {
+    app.use(enforce.HTTPS({ trustProtoHeader: true }));
     app.use(expressBasicAuth({
         users: { [process.env.AUTH_USERNAME]: process.env.AUTH_PASSWORD },
         challenge: true,
