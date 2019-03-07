@@ -5,6 +5,7 @@ export default merge.multiple(common, {
     client: {
         mode: 'development',
         devServer: {
+            port: 8080,
             proxy: {
                 '/api': process.env.API_BASE_URL
             }
