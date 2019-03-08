@@ -53,16 +53,16 @@ export default function (io) {
     router.patch('/devices/:deviceId', (req, res, next) => {
         const deviceId = req.params.deviceId;
         const device = req.body;
-        Device.update({ _id: deviceId }, device, (err, updatedDevice) => {
+        Device.findByIdAndUpdate(deviceId, device, { new: true }, (err, updatedDevice) => {
             if (err) return next(err);
             res.send(updatedDevice);
-            log.info(`Saved device ${device._id}.`);
+            log.info(`Saved device ${updatedDevice._id}.`);
 
             // TODO: Do this in a better way.
-            const socketId = Object.keys(clients).find((socketId) => clients[socketId].deviceId === device._id);
+            const socketId = Object.keys(clients).find((socketId) => clients[socketId].deviceId === deviceId);
             if (socketId) {
                 const client = clients[socketId];
-                client.socket.emit('update:deviceSettings', device.settings);
+                client.socket.emit('update:deviceSettings', updatedDevice.settings);
                 log.info('Updated the device.');
             }
         });
