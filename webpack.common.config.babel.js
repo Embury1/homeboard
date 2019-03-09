@@ -4,6 +4,7 @@ import nodeExternals from 'webpack-node-externals';
 import workboxPlugin from 'workbox-webpack-plugin';
 import Dotenv from 'dotenv-webpack';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
+import WebpackPwaManifest from 'webpack-pwa-manifest';
 
 // common configuration
 export default {
@@ -25,10 +26,32 @@ export default {
                 swSrc: path.join('src', 'sw.js')
             }),
             new CopyWebpackPlugin([
+                { from: path.resolve('src/www/img/favicon-144x144.png'), to: path.resolve('dist/assets') },
                 { from: path.resolve('src/www/img/favicon-32x32.png'), to: path.resolve('dist/assets') },
                 { from: path.resolve('src/www/img/favicon-16x16.png'), to: path.resolve('dist/assets') },
                 { from: path.resolve('src/www/img/favicon.ico'), to: path.resolve('dist/assets') }
             ]),
+            new WebpackPwaManifest({
+                "name": "Homeboard",
+                "short_name": "Homeboard",
+                "start_url": ".",
+                "display": "fullscreen",
+                "background_color": "#111112",
+                "description": "Smart home device platform.",
+                "icons": [{
+                    "src": "src/www/img/favicon-16x16.png",
+                    "sizes": "16x16",
+                    "type": "image/png"
+                }, {
+                    "src": "src/www/img/favicon-32x32.png",
+                    "sizes": "32x32",
+                    "type": "image/png"
+                }, {
+                    "src": "src/www/img/favicon-144x144.png",
+                    "sizes": "144x144",
+                    "type": "image/png"
+                }]
+            }),
             new Dotenv()
         ],
         module: {
