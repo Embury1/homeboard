@@ -29,17 +29,17 @@ export default {
                 { from: path.resolve('src/www/img/favicon.ico'), to: path.resolve('dist/assets') }
             ]),
             new WebpackPwaManifest({
-                "name": "Homeboard",
-                "short_name": "Homeboard",
-                "start_url": ".",
-                "display": "fullscreen",
-                "background_color": "#111112",
-                "theme_color": "#444444",
-                "description": "Smart home device platform.",
-                "icons": [{
-                    "src": path.resolve('src/www/img/favicon.png'),
-                    "sizes": [16, 32, 144],
-                    "type": "image/png"
+                name: "Homeboard",
+                short_name: "Homeboard",
+                start_url: ".",
+                display: "fullscreen",
+                background_color: "#111112",
+                theme_color: "#444444",
+                description: "Smart home device platform.",
+                icons: [{
+                    src: path.resolve('src/www/img/favicon.png'),
+                    sizes: [16, 32, 144],
+                    type: "image/png"
                 }]
             }),
             new Dotenv()
