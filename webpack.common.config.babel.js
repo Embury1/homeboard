@@ -3,6 +3,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import nodeExternals from 'webpack-node-externals';
 import workboxPlugin from 'workbox-webpack-plugin';
 import Dotenv from 'dotenv-webpack';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
 
 // common configuration
 export default {
@@ -23,6 +24,11 @@ export default {
             new workboxPlugin.InjectManifest({
                 swSrc: path.join('src', 'sw.js')
             }),
+            new CopyWebpackPlugin([
+                { from: path.resolve('src/www/img/favicon-32x32.png'), to: path.resolve('dist/assets') },
+                { from: path.resolve('src/www/img/favicon-16x16.png'), to: path.resolve('dist/assets') },
+                { from: path.resolve('src/www/img/favicon.ico'), to: path.resolve('dist/assets') }
+            ]),
             new Dotenv()
         ],
         module: {
