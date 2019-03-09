@@ -1,7 +1,7 @@
 @import '../../../css/base.css';
 
 .form {
-    composes: row;
+    composes: container;
     height: 100%;
 }
 

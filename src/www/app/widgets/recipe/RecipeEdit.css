@@ -35,7 +35,7 @@
  */
 
 .recipeIngredientRow {
-    composes: row;
+    composes: container;
     margin: 0 0 1em;
 }
 
@@ -53,13 +53,13 @@
  */
 
 .newIngredient {
-    composes: row;
+    composes: container;
     align-items: flex-end;
     flex-flow: row nowrap;
 }
 
 .newIngredientMeasure {
-    composes: row;
+    composes: container;
     flex-flow: row nowrap;
     margin-right: 30px;
     lost-column: 1/3;
