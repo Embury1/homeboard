@@ -36,6 +36,7 @@ export default {
                 background_color: "#111112",
                 theme_color: "#444444",
                 description: "Smart home device platform.",
+                crossorigin: 'use-credentials',
                 icons: [{
                     src: path.resolve('src/www/img/favicon.png'),
                     sizes: [16, 32, 144],
