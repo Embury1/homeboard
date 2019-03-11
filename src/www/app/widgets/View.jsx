@@ -7,6 +7,8 @@ import { NotFound } from './notFound/NotFound.jsx';
 import * as Widgets from './Widgets';
 import styles from './View.css';
 
+const REF_INDEX_KEY = 'refIndex';
+
 class View extends Component {
     constructor(props) {
         super(props);
@@ -16,14 +18,10 @@ class View extends Component {
     }
 
     componentDidUpdate() {
-        let refIndex = Number(localStorage.getItem('refIndex'));
-
-        if (refIndex >= this.props.length) {
-            refIndex = this.props.length - 1;
-        }
-
-        if (refIndex !== this.state.refIndex) {
-            this.setState({ refIndex });
+        const refIndex = Number(localStorage.getItem(REF_INDEX_KEY));
+        const maxIndex = this.props.refs.length;
+        if (refIndex >= maxIndex) {
+            localStorage.setItem(REF_INDEX_KEY, maxIndex - 1);
         }
     }
 
@@ -37,19 +35,19 @@ class View extends Component {
     };
 
     previous = () => {
-        const refIndex = Math.max(this.state.refIndex - 1, 0);
-        localStorage.setItem('refIndex', refIndex);
+        const refIndex = Math.max(Number(localStorage.getItem(REF_INDEX_KEY)) - 1, 0);
+        localStorage.setItem(REF_INDEX_KEY, refIndex);
         this.setState({ refIndex });
     };
 
     next = () => {
-        const refIndex = Math.min(this.state.refIndex + 1, this.props.refs.length - 1);
-        localStorage.setItem('refIndex', refIndex);
+        const refIndex = Math.min(Number(localStorage.getItem(REF_INDEX_KEY)) + 1, this.props.refs.length - 1);
+        localStorage.setItem(REF_INDEX_KEY, refIndex);
         this.setState({ refIndex });
     };
 
     render() {
-        const refIndex = this.state.refIndex;
+        const refIndex = Math.max(Math.min(Number(localStorage.getItem(REF_INDEX_KEY)), this.props.refs.length - 1), 0);
         const ref = this.props.refs[refIndex];
         const Widget = this.resolveRef(ref);
 
