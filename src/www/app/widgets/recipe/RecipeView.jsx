@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDice } from '@fortawesome/free-solid-svg-icons';
+
 import vars from '../../vars';
 import Recipe from './Recipe.jsx';
 import styles from './RecipeView.css';
@@ -94,7 +97,7 @@ class RecipeView extends Component {
                 </select>
 
                 <div className={styles.controls}>
-                    <button type="button" onClick={this.handleRandomClick} className={styles.randomize}>Randomize</button>
+                    <button type="button" onClick={this.handleRandomClick} className={styles.randomize}><FontAwesomeIcon icon={faDice} /></button>
 
                     {this.state.currentRecipe._id &&
                         <input type="range" min="1" max="10" step="1" value={this.state.adjustedServings} onChange={this.handleServingsChange}
