@@ -21,6 +21,9 @@
 		"nodemon": "^1.18.7"
 	},
 	"dependencies": {
+		"@fortawesome/fontawesome-svg-core": "1.2.15",
+		"@fortawesome/free-solid-svg-icons": "5.7.2",
+		"@fortawesome/react-fontawesome": "0.1.4",
 		"autoprefixer": "^7.2.6",
 		"babel-cli": "^6.26.0",
 		"babel-core": "^6.26.3",
