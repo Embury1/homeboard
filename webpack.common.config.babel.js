@@ -29,8 +29,8 @@ export default {
                 { from: path.resolve('src/www/img/favicon.ico'), to: path.resolve('dist/assets') }
             ]),
             new WebpackPwaManifest({
-                name: "Homeboard",
-                short_name: "Homeboard",
+                name: process.env.APP_NAME,
+                short_name: process.env.APP_NAME,
                 start_url: ".",
                 display: "fullscreen",
                 background_color: "#111112",
