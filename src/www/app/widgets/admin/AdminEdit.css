@@ -1,12 +1,12 @@
 @import '../../../css/base.css';
 
 .form {
-    composes: container;
+    composes: flexContainer;
     height: 100%;
 }
 
-.column {
-    lost-column: 1/4;
+.tile {
+    composes: flexItem;
 }
 
 /*

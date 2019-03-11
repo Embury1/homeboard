@@ -175,7 +175,7 @@ class RecipeEdit extends Component {
 
         return (
             <div>
-                <form name="recipeForm" onSubmit={this.handleSubmit} className={styles.container} autoComplete="off">
+                <form name="recipeForm" onSubmit={this.handleSubmit} className={styles.flexContainer} autoComplete="off">
                     <div className={styles.recipeDetailsColumn}>
                         <select value={this.state.currentRecipe._id} onChange={this.handleRecipeSelectionChange} className={styles.recipes}>
                             <option value="">New recipe</option>
@@ -185,7 +185,7 @@ class RecipeEdit extends Component {
                         <input type="text" name="name" value={this.state.currentRecipe.name} onChange={this.handleChange}
                             className={styles.recipeName} placeholder="Recipe name" />
 
-                        <div className={styles.container}>
+                        <div className={styles.flexContainer}>
                             <input type="number" name="servings" value={this.state.currentRecipe.servings} onChange={this.handleChange}
                                 className={styles.servings} step="1" min="1" max="20" placeholder="Servings" />
 

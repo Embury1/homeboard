@@ -25,7 +25,7 @@
 }
 
 .newItem {
-    composes: container;
+    composes: flexContainer;
     align-items: flex-end;
     flex-flow: row nowrap;
     justify-content: flex-start;

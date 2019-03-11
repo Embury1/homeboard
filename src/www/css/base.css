@@ -4,8 +4,32 @@
 
 @lost flexbox flex;
 
-.container {
-    lost-center: 100%;
+/* 600px, 900px, 1200px */
+@custom-media --small (max-width: 37.5em);
+@custom-media --medium (max-width: 56.25em);
+@custom-media --large (max-width: 75em);
+/*@custom-media --xlarge (min-width: 75.063em);*/
+
+.flexContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.flexItem {
+    flex-grow: 0;
+    flex-shrink: 0;
+    margin: 0 2em 0 0;
+}
+
+@media (--small) {
+    .flexContainer {
+        flex-direction: column;
+    }
+
+    .flexItem {
+        margin: 0 0 2em;
+    }
 }
 
 .label {

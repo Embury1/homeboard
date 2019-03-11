@@ -74,7 +74,7 @@ class Select extends Component {
             : 'fa-caret-down';
 
         return (
-            <div className={`${styles.container} ${this.props.className}`}>
+            <div className={`${styles.flexContainer} ${this.props.className}`}>
                 <div className={styles.backdrop} onClick={this.open}>
                     <input type="text"
                         name="search"
