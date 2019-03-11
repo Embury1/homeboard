@@ -13,15 +13,21 @@ class View extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            refIndex: 0
+            refIndex: 0,
+            loading: true
         };
     }
 
     componentDidUpdate() {
         const refIndex = Number(localStorage.getItem(REF_INDEX_KEY));
         const maxIndex = this.props.refs.length;
+
         if (refIndex >= maxIndex) {
             localStorage.setItem(REF_INDEX_KEY, maxIndex - 1);
+        }
+
+        if (this.state.loading) {
+            this.setState({ loading: false });
         }
     }
 
@@ -52,6 +58,7 @@ class View extends Component {
         const Widget = this.resolveRef(ref);
 
         return (
+            this.state.loading && <h2>Loading&hellip;</h2> ||
             <React.Fragment>
                 {this.props.refs.length > 1 && refIndex > 0 &&
                     <div className={styles.previous} onClick={this.previous}>
