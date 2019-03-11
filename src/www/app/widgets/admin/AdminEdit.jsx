@@ -105,7 +105,7 @@ class AdminEdit extends Component {
 
         return (
             <form name="deviceForm" className={styles.form}>
-                <section className={styles.column}>
+                <section className={styles.tile}>
                     <select value={this.state.currentDevice._id} onChange={this.setCurrentDevice} className={styles.devices}>
                         {deviceOptions}
                     </select>
@@ -133,7 +133,7 @@ class AdminEdit extends Component {
                     <button type="button" className={styles.cancel} onClick={this.cancel}>Cancel</button>
                 </section>
 
-                <section className={styles.column}>
+                <section className={styles.tile}>
                     <input type="text" name="name" value={this.state.currentDevice.settings.name} onChange={this.updateDevice} className={styles.name} />
 
                     <select multiple value={this.state.selectedRefs} onChange={this.selectRefs} className={styles.refs}>
