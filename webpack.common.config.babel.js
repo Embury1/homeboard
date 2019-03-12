@@ -38,7 +38,7 @@ export default {
                 description: "Smart home device platform.",
                 crossorigin: 'use-credentials',
                 icons: [{
-                    src: path.resolve('src/www/img/favicon.png'),
+                    src: path.resolve(`src/www/img/${process.env.APP_NAME.toLocaleLowerCase().replace(/\s/g, '')}.png`),
                     sizes: [16, 32, 144],
                     type: "image/png"
                 }]
