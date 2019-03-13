@@ -19,10 +19,12 @@ class View extends Component {
     }
 
     componentDidUpdate() {
-        const maxIndex = this.props.refs.length;
+        const maxIndex = this.props.refs.length - 1;
 
-        if (this.state.refIndex >= maxIndex) {
-            this.setState({ refIndex: maxIndex - 1 });
+        if (this.state.refIndex === -1 && maxIndex >= 0) {
+            this.setState({ refIndex: 0 });
+        } else if (this.state.refIndex > maxIndex) {
+            this.setState({ refIndex: maxIndex });
         }
 
         if (this.state.loading) {
