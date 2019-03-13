@@ -1,29 +1,48 @@
 @import '../../css/base.css';
 
-.nav {
-    align-items: center;
-    cursor: pointer;
+.navBar {
+    /* background: #999; */
+    background: #222;
+    border-top: 1px solid #333;
+    bottom: 0;
     display: flex;
-    font-size: 3em;
-    height: 100%;
-    justify-content: center;
-    opacity: .3;
-    position: absolute;
-    top: 0;
-    transition: all 300ms ease-out;
-    width: .6em;
+    justify-content: space-between;
+    left: 0;
+    padding: 0.5em;
+    position: fixed;
+    right: 0;
+}
+
+.navSelect {
+    composes: input;
+    background: #333;
+    margin: 0 0.5em;
+    width: 15em;
+
+    &:enabled:focus, &:enabled:hover {
+        box-shadow: none;
+    }
+}
+
+.navBtn {
+    composes: btn;
+    background: #333;
+
+    &:enabled:focus, &:enabled:hover {
+        box-shadow: none;
+    }
 
     &:hover {
-	opacity: 1;
+        opacity: 1;
     }
 }
 
 .previous {
-    composes: nav;
+    composes: navBtn;
     left: 0;
 }
 
 .next {
-    composes: nav;
+    composes: navBtn;
     right: 0;
 }

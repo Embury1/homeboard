@@ -13,7 +13,7 @@ class View extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            refIndex: 0,
+            refIndex: Number(localStorage.getItem(REF_INDEX_KEY)) || 0,
             loading: true
         };
     }
@@ -22,8 +22,8 @@ class View extends Component {
         const refIndex = Number(localStorage.getItem(REF_INDEX_KEY));
         const maxIndex = this.props.refs.length;
 
-        if (refIndex >= maxIndex) {
-            localStorage.setItem(REF_INDEX_KEY, maxIndex - 1);
+        if (this.state.refIndex >= maxIndex) {
+            this.setState({ refIndex: maxIndex - 1 });
         }
 
         if (this.state.loading) {
@@ -40,41 +40,49 @@ class View extends Component {
         return Widgets[widgetRef][modeRef];
     };
 
-    previous = () => {
+    previous = (event) => {
+        event.preventDefault();
         const refIndex = Math.max(Number(localStorage.getItem(REF_INDEX_KEY)) - 1, 0);
         localStorage.setItem(REF_INDEX_KEY, refIndex);
         this.setState({ refIndex });
     };
 
-    next = () => {
+    next = (event) => {
+        event.preventDefault();
         const refIndex = Math.min(Number(localStorage.getItem(REF_INDEX_KEY)) + 1, this.props.refs.length - 1);
         localStorage.setItem(REF_INDEX_KEY, refIndex);
         this.setState({ refIndex });
     };
 
+    refSelect = (event) => {
+        event.preventDefault();
+        const refIndex = event.target.value;
+        localStorage.setItem(REF_INDEX_KEY, refIndex);
+        this.setState({ refIndex });
+    };
+
     render() {
-        const refIndex = Math.max(Math.min(Number(localStorage.getItem(REF_INDEX_KEY)), this.props.refs.length - 1), 0);
+        const refIndex = this.state.refIndex;//Math.max(Math.min(Number(localStorage.getItem(REF_INDEX_KEY)), this.props.refs.length - 1), 0);
         const ref = this.props.refs[refIndex];
         const Widget = this.resolveRef(ref);
+        const navItems = this.props.refs.map((ref, index) => <option value={index} key={index}>{ref.replace(/\//g, ' ')}</option>);
 
         return (
             this.state.loading && <h2>Loading&hellip;</h2> ||
             <React.Fragment>
-                {this.props.refs.length > 1 && refIndex > 0 &&
-                    <div className={styles.previous} onClick={this.previous}>
-                        <i className={[FontAwesome.fa, FontAwesome['fa-angle-left']].join(' ')}></i>
-                    </div>
-                }
-
                 <ErrorBoundary>
                     <Widget {...this.props} />
                 </ErrorBoundary>
 
-                {this.props.refs.length > 1 && refIndex < (this.props.refs.length - 1) &&
-                    <div className={styles.next} onClick={this.next}>
-                        <i className={[FontAwesome.fa, FontAwesome['fa-angle-right']].join(' ')}></i>
-                    </div>
-                }
+                <nav className={styles.navBar}>
+                    <button className={styles.previous} onClick={this.previous} disabled={!this.props.refs.length || refIndex <= 0}>
+                        <i className={`${FontAwesome.fa} ${FontAwesome['fa-angle-left']}`}></i>
+                    </button>
+                    <select value={refIndex} className={styles.navSelect} onChange={this.refSelect}>{navItems}</select>
+                    <button className={styles.next} onClick={this.next} disabled={!this.props.refs.length || refIndex >= (this.props.refs.length - 1)}>
+                        <i className={`${FontAwesome.fa} ${FontAwesome['fa-angle-right']}`}></i>
+                    </button>
+                </nav>
             </React.Fragment>
         );
     }
