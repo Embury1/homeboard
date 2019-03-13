@@ -67,6 +67,10 @@ class View extends Component {
         const Widget = this.resolveRef(ref);
         const navItems = this.props.refs.map((ref, index) => <option value={index} key={index}>{ref.replace(/\//g, ' ')}</option>);
 
+        if (!navItems.length) {
+            navItems.push(<option value="-1" key="" disabled>No views selected</option>);
+        }
+
         return (
             this.state.loading && <h2>Loading&hellip;</h2> ||
             <React.Fragment>
