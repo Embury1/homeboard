@@ -19,7 +19,6 @@ class View extends Component {
     }
 
     componentDidUpdate() {
-        const refIndex = Number(localStorage.getItem(REF_INDEX_KEY));
         const maxIndex = this.props.refs.length;
 
         if (this.state.refIndex >= maxIndex) {
