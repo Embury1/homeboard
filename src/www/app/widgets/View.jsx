@@ -82,7 +82,11 @@ class View extends Component {
                     <button className={styles.previous} onClick={this.previous} disabled={!this.props.refs.length || refIndex <= 0}>
                         <i className={`${FontAwesome.fa} ${FontAwesome['fa-angle-left']}`}></i>
                     </button>
-                    <select value={refIndex} className={styles.navSelect} onChange={this.refSelect}>{navItems}</select>
+
+                    <select value={refIndex} className={styles.navSelect} onChange={this.refSelect}>
+                        {navItems}
+                    </select>
+
                     <button className={styles.next} onClick={this.next} disabled={!this.props.refs.length || refIndex >= (this.props.refs.length - 1)}>
                         <i className={`${FontAwesome.fa} ${FontAwesome['fa-angle-right']}`}></i>
                     </button>
