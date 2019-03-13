@@ -62,7 +62,7 @@ class View extends Component {
     };
 
     render() {
-        const refIndex = this.state.refIndex;//Math.max(Math.min(Number(localStorage.getItem(REF_INDEX_KEY)), this.props.refs.length - 1), 0);
+        const refIndex = this.state.refIndex;
         const ref = this.props.refs[refIndex];
         const Widget = this.resolveRef(ref);
         const navItems = this.props.refs.map((ref, index) => <option value={index} key={index}>{ref.replace(/\//g, ' ')}</option>);
