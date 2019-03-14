@@ -79,7 +79,7 @@ class ShoppingListEdit extends Component {
     };
 
     pan = (event) => {
-        const pannedItemOffset = event.deltaX;
+        const pannedItemOffset = Math.max(event.deltaX, 0);
         this.setState({ pannedItemOffset });
     };
 
