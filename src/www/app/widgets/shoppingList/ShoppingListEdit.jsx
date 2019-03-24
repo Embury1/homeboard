@@ -125,10 +125,20 @@ class ShoppingListEdit extends Component {
         this.setState({ newItem });
     };
 
+    markDelete = (item) => {
+        this.setState({ clickedItemId: item._id });
+    };
+
+    clearDelete = () => {
+        this.setState({ clickedItemId: null });
+    };
+
     render() {
         const shoppingListItems = _.orderBy(this.state.items, ['created'], ['desc']).map((item, index) => {
             return (
-                <Hammer key={index} onMouseDown={() => this.setState({ clickedItemId: item._id })} onMouseUp={() => this.setState({ clickedItemId: null })} onMouseLeave={() => this.setState({ clickedItemId: null })}
+                <Hammer key={index}
+                    onMouseDown={() => this.markDelete(item)} onTouchStart={() => this.markDelete(item)}
+                    onMouseUp={() => this.deleteItem.clearDelete()} onMouseLeave={() => this.deleteItem.clearDelete()} onTouchEnd={() => this.clearDelete()}
                     onTap={() => this.toggleItemStatus(item)} onPress={() => this.deleteItem(item)} options={{ recognizers: { press: { time: 800 }}}}>
                     <p className={`${styles.item} ${item._id === this.state.clickedItemId && styles.itemDelete}`}>
                         <span className={styles.itemName}>{item.amount > 0 ? (item.amount + item.unit) : ''} {item.name}</span>
