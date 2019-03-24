@@ -73,34 +73,19 @@ class ShoppingListEdit extends Component {
         });
     };
 
-    panStart = (item) => {
-        const pannedItem = Object.assign({}, item);
-        this.setState({ pannedItem });
-    };
-
-    pan = (event) => {
-        const pannedItemOffset = Math.max(event.deltaX, 0);
-        this.setState({ pannedItemOffset });
-    };
-
-    panEnd = () => {
-        if (this.state.pannedItemOffset >= (window.innerWidth / 2)) {
-            const pannedItem = Object.assign({}, this.state.pannedItem);
-            fetch(`${vars.apiBaseUrl}/api/shoppingListItems/${pannedItem._id}`, {
-                method: 'DELETE',
-                headers: { "Content-Type": "application/json; charset=utf-8" },
-                body: JSON.stringify(pannedItem)
-            }).then((res) => {
-                return res.json();
-            }).then((deletedItem) => {
-                // TODO: Confirm delete
-            }).catch((err) => {
-                // TODO: Handle error
-            });
-        }
-        this.setState({
-            pannedItemOffset: window.outerWidth,
-            pannedItem: {}
+    deleteItem = (item) => {
+        fetch(`${vars.apiBaseUrl}/api/shoppingListItems/${item._id}`, {
+            method: 'DELETE',
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+            body: JSON.stringify(item)
+        }).then((res) => {
+            return res.json();
+        }).then((deletedItem) => {
+            if ('vibrate' in window.navigator) {
+                window.navigator.vibrate(200);
+            }
+        }).catch((err) => {
+            // TODO: Handle error
         });
     };
 
@@ -143,8 +128,9 @@ class ShoppingListEdit extends Component {
     render() {
         const shoppingListItems = _.orderBy(this.state.items, ['created'], ['desc']).map((item, index) => {
             return (
-                <Hammer key={index} onTap={() => this.toggleItemStatus(item)} onPanStart={() => this.panStart(item)} onPan={this.pan} onPanEnd={this.panEnd} direction="DIRECTION_RIGHT">
-                    <p className={styles.item} style={item._id === this.state.pannedItem._id ? { left: this.state.pannedItemOffset } : {}}>
+                <Hammer key={index} onMouseDown={() => this.setState({ clickedItemId: item._id })} onMouseUp={() => this.setState({ clickedItemId: null })} onMouseLeave={() => this.setState({ clickedItemId: null })}
+                    onTap={() => this.toggleItemStatus(item)} onPress={() => this.deleteItem(item)} options={{ recognizers: { press: { time: 800 }}}}>
+                    <p className={`${styles.item} ${item._id === this.state.clickedItemId && styles.itemDelete}`}>
                         <span className={styles.itemName}>{item.amount > 0 ? (item.amount + item.unit) : ''} {item.name}</span>
                         {item.done && <i className={[styles.itemCheck, FontAwesome.fa, FontAwesome['fa-check']].join(' ')}></i>}
                     </p>

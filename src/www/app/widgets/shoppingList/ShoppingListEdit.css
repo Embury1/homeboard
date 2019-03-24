@@ -6,7 +6,6 @@
     cursor: pointer;
     display: flex;
     font-weight: 400;
-    position: relative;
     user-select: none;
     width: 100%;
 }
@@ -22,6 +21,11 @@
     color: #22C365;
     font-size: 1.5em;
     margin: 0 0 0 .2em;
+}
+
+.itemDelete {
+    border-color: #ff0033;
+    transition: border-color .2s .5s;
 }
 
 .newItem {
