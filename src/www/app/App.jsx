@@ -35,6 +35,12 @@ class App extends Component {
         } else {
             this.init();
         }
+
+        window.oncontextmenu = (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            return false;
+        };
     }
 
     componentWillUnmount() {
