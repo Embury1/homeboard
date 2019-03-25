@@ -138,7 +138,7 @@ class ShoppingListEdit extends Component {
             return (
                 <Hammer key={index}
                     onMouseDown={() => this.markDelete(item)} onTouchStart={() => this.markDelete(item)}
-                    onMouseUp={() => this.deleteItem.clearDelete()} onMouseLeave={() => this.deleteItem.clearDelete()} onTouchEnd={() => this.clearDelete()}
+                    onMouseUp={() => this.clearDelete()} onMouseLeave={() => this.clearDelete()} onTouchEnd={() => this.clearDelete()}
                     onTap={() => this.toggleItemStatus(item)} onPress={() => this.deleteItem(item)} options={{ recognizers: { press: { time: 800 }}}}>
                     <p className={`${styles.item} ${item._id === this.state.clickedItemId && styles.itemDelete}`}>
                         <span className={styles.itemName}>{item.amount > 0 ? (item.amount + item.unit) : ''} {item.name}</span>
