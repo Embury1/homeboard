@@ -159,7 +159,6 @@ class ShoppingListEdit extends Component {
         return (
             <Fragment>
                 <form name="quickAdd" onSubmit={this.addNewItem} className={styles.newItem} autoComplete="off">
-                    <input autoComplete="off" name="hidden" type="text" style={{ display: 'none' }} />
                     <Select
                         items={productItems}
                         onValue={this.selectChange}
