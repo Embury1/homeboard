@@ -10,11 +10,11 @@ self.addEventListener('fetch', (event) => {
     if (/\/api\//.test(event.request.url)) {
         if (event.request.method !== 'GET') {
             // Queue non-GET requests.
-            const promiseChain = fetch(event.request.clone()).catch((err) => {
-                return fetchQueue.addRequest(event.request);
-            });
-
-            event.waitUntil(promiseChain);
+            event.respondWith(
+                fetch(event.request.clone()).catch(() => {
+                    return fetchQueue.addRequest(event.request);
+                })
+            );
         } else {
             // Handle GET requests with the network-first strategy.
             event.respondWith(
