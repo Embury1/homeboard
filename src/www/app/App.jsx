@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM, { render } from 'react-dom';
 
 import io from 'socket.io-client';
+import FontAwesome from 'font-awesome/css/font-awesome.css';
 
 import vars from './vars';
 import styles from './App.css';
@@ -17,7 +18,8 @@ class App extends Component {
             shoppingListsSocket: io(`${vars.apiBaseUrl}/shoppingLists`, { path: '/ws' }),
             settings: {
                 refs: []
-            }
+            },
+            online: true
         };
     }
 
@@ -41,6 +43,9 @@ class App extends Component {
             event.stopPropagation();
             return false;
         };
+
+        window.addEventListener('online', () => this.setState({ online: true }));
+        window.addEventListener('offline', () => this.setState({ online: false }));
     }
 
     componentWillUnmount() {
@@ -79,8 +84,15 @@ class App extends Component {
     render() {
         return (
             <React.Fragment>
-                <p className={styles.deviceName}>{this.state.settings.name}</p>
-                <p className={styles.deviceId}>{this.state.deviceId}</p>
+                <aside className={styles.statusBar}>
+                    <span>{this.state.settings.name}</span>
+                    <span>{this.state.deviceId}</span>
+                    <span className={styles.online}>
+                        {this.state.online
+                            ? <i className={`${FontAwesome.fa} ${FontAwesome['fa-wifi']}`}></i>
+                            : <i className={`${FontAwesome.fa} ${FontAwesome['fa-ban']}`}></i>}
+                    </span>
+                </aside>
                 <View refs={this.state.settings.refs} {...this.state} />
             </React.Fragment>
         );

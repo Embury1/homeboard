@@ -1,20 +1,19 @@
 @import '../css/base.css';
 
-.deviceInfo {
+.statusBar {
+    align-items: center;
+    display: flex;
     font-size: 9pt;
+    justify-content: space-between;
+    left: .5em;
     letter-spacing: 1px;
-    margin: 0;
+    max-width: 100%;
     opacity: .3;
     position: absolute;
+    right: .5em;
     top: .2em;
 }
 
-.deviceName {
-    composes: deviceInfo;
-    left: .5em;
-}
-
-.deviceId {
-    composes: deviceInfo;
-    right: .5em;
+.online {
+    width: 1em;
 }
