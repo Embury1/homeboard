@@ -37,6 +37,7 @@
 
 .newItemProduct {
     margin: 0 .8em 0 0;
+    position: relative;
     width: 100%;
 }
 

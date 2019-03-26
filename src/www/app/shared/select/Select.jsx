@@ -75,7 +75,7 @@ class Select extends Component {
 
         return (
             <div className={`${styles.flexContainer} ${this.props.className}`}>
-                <div className={styles.backdrop} onClick={this.open}>
+                <div className={`${styles.backdrop} ${this.state.isOpen && styles.open || ''}`} onClick={this.open}>
                     <input type="text"
                         name="search"
                         value={this.state.filterText || this.props.value} 
