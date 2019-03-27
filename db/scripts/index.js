@@ -13,7 +13,8 @@ const scripts = [
 MongoClient.connect(process.env.DB_URL, (err, client) => {
     if (err) return console.error(err);
     const db = client.db('homeboard');
-    scripts.forEach((script) => script(db));
-    client.close();
-    console.log('Finished migrating.');
+    Promise.all(scripts.map((script) => script(db))).then(() => {
+        client.close();
+        console.log('Finished migrating.');
+    });
 });
