@@ -2,7 +2,8 @@ import mongoose, { Schema } from 'mongoose';
 
 const productSchema = new Schema({
     serial: { type: String, required: true },
-    name: { type: String, required: true }
+    name: { type: String, required: true },
+    _id: false
 });
 
 const vendorSchema = new Schema({

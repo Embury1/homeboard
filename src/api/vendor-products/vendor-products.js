@@ -16,6 +16,23 @@ export default function (io) {
         });
     });
 
+    router.put('/vendors', (req, res, next) => {
+        const vendor = req.body;
+        delete vendor._id;
+        Vendor.findOneAndUpdate({
+            prefix: vendor.prefix
+        },
+        vendor,
+        {
+            upsert: true,
+            new: true
+        }, (err, savedVendorProduct) => {
+            if (err) return next(err);
+            res.send(savedVendorProduct);
+            log.info(`Upserted vendor ${savedVendorProduct._id} with ${vendor.products.length} product(s).`);
+        });
+    });
+
     router.get('/products', (req, res, next) => {
         Product.find({}, (err, products) => {
             if (err) return next(err);
