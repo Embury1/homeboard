@@ -8,6 +8,8 @@ import vars from './vars';
 import styles from './App.css';
 import View from './widgets/View.jsx';
 
+const DEVICEID_KEY = 'deviceId';
+
 class App extends Component {
     constructor(props) {
         super(props);
@@ -53,23 +55,21 @@ class App extends Component {
     }
 
     init() {
-        const deviceId = localStorage.getItem('deviceId');
-        let deviceUrl = '';
-        let httpMethod = '';
-        if (deviceId) {
-            deviceUrl = `${vars.apiBaseUrl}/api/devices/${deviceId}`;
-            httpMethod = 'GET';
-        } else {
-            deviceUrl = `${vars.apiBaseUrl}/api/devices`;
-            httpMethod = 'POST';
-        }
-        fetch(deviceUrl, { method: httpMethod }).then((res) => {
+        const deviceId = localStorage.getItem(DEVICEID_KEY);
+        const fetchMethod = deviceId ? this.getDevice : this.createDevice;
+        fetchMethod(deviceId).then((res) => {
+            if (fetchMethod === this.getDevice && res.status === 404) {
+                localStorage.removeItem(DEVICEID_KEY);
+                return this.createDevice();
+            }
+            return Promise.resolve(res);
+        }).then((res) => {
             return res.json();
         }).then((device) => {
             const deviceId = device._id;
             const settings = device.settings;
             this.setState({ deviceId, settings });
-            localStorage.setItem('deviceId', deviceId);
+            localStorage.setItem(DEVICEID_KEY, deviceId);
             this.state.devicesSocket.emit('register:device', deviceId);
         }).catch((err) => {
             // TODO: Handle error
@@ -79,6 +79,14 @@ class App extends Component {
             this.setState({ settings: settings });
             console.log('Received settings.', settings);
         });
+    }
+
+    getDevice(deviceId) {
+        return fetch(`${vars.apiBaseUrl}/api/devices/${deviceId}`);
+    }
+
+    createDevice() {
+        return fetch(`${vars.apiBaseUrl}/api/devices`, { method: 'POST' });
     }
 
     render() {
