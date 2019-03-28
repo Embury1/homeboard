@@ -37,6 +37,7 @@ export default function (io) {
         const deviceId = req.params.deviceId;
         Device.findById(deviceId, (err, device) => {
             if (err) return next(err);
+            if (!device) return res.sendStatus(404);
             res.send(device);
             log.info(`Responded with device ${device._id}.`);
         });
